@@ -8,8 +8,8 @@ GraphNode::~GraphNode()
 {
 }
 
-void GraphNode::addChildNode(GraphNode newChildNode){
-    this->childNodes.push_back(newChildNode);
+void GraphNode::addReachableNode(unsigned int nodeId, unsigned int cost){
+    this->costToOtherNodes.insert(std::make_pair<>(nodeId, cost));
 }
 
 void GraphNode::setXPos(unsigned int newXPos){
@@ -27,3 +27,12 @@ unsigned int GraphNode::getXPos(){
 unsigned int GraphNode::getYPos(){
     return this->yPos;
 }
+
+void GraphNode::setId(unsigned int newId){
+    this->id = newId;
+}
+
+unsigned int GraphNode::getId(){
+    return this->id;
+}
+    
