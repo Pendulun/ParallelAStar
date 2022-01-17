@@ -24,3 +24,11 @@ SearchGraphNode* SearchGraphNode::getParentNode(){
 const unsigned int SearchGraphNode::getPathCost(){
     return this->pathCostToNode;
 }
+
+void SearchGraphNode::setNodeId(unsigned int nodeId){
+    this->nodeId = nodeId;
+}
+
+unsigned int SearchGraphNode::getNodeId(){
+    return this->nodeId;
+}

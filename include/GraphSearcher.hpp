@@ -1,9 +1,19 @@
 #ifndef __GRAPHSEARCHER_H__
 #define __GRAPHSEARCHER_H__
+
+#include <queue>
+#include <utility>
+#include <vector>
+#include <set>
+
+#include <iostream>
+
 #include "Graph.hpp"
 #include "Heuristic.hpp"
 #include "ManhattanHeuristic.hpp"
 #include "EuclidianHeuristic.hpp"
+#include "SearchGraphNode.hpp"
+#include "SearchGraphNodeComparator.hpp"
 
 #include <list>
 

@@ -65,8 +65,31 @@ std::list<unsigned int> GraphSearcher::getPathTo(const unsigned int finalNodeId)
     return pathToFinalNode;
 }
 
-std::list<unsigned int> astarSearch(Heuristic* myHeuristic, const unsigned int finalNodeId){
-    //Pesquisar via astar
+std::list<unsigned int> GraphSearcher::astarSearch(Heuristic* myHeuristic, const unsigned int finalNodeId){
+    //List of Node Ids to get to the final node
     std::list<unsigned int> pathToFinalNode;
+
+    //Priority Queue of the open nodes yet to be explored
+    std::priority_queue<std::pair<float, SearchGraphNode>,std::vector<std::pair<float, SearchGraphNode>>, SearchGraphNodeComparator> openList;
+    
+    //Set of Ids in which its Nodes have been explored
+    std::set<unsigned int> closedList;
+    std::set<unsigned int>::iterator closedListIterator;
+
+    for(unsigned int nodeCount = 10; nodeCount > 5; nodeCount--){
+        SearchGraphNode sgn;
+        sgn.setNodeId(nodeCount);
+        sgn.setPathCost(nodeCount+10);
+        openList.push(std::make_pair<>(nodeCount, sgn));
+        closedList.insert(sgn.getNodeId());
+    }
+    SearchGraphNode firstNode = openList.top().second;
+    openList.pop();
+    std::cout<<"O primeiro elemento na OpenList eh: "<<firstNode.getNodeId()<<std::endl;
+
+    closedListIterator = closedList.find(firstNode.getNodeId());
+
+    std::cout<<"Ele esta na ClosedList? "<<(closedListIterator != closedList.end())<<std::endl;
+    
     return pathToFinalNode;
 }
