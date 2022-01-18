@@ -12,19 +12,19 @@ void GraphNode::addReachableNode(unsigned int nodeId, unsigned int cost){
     this->costToOtherNodes.insert(std::make_pair<>(nodeId, cost));
 }
 
-void GraphNode::setXPos(unsigned int newXPos){
+void GraphNode::setXPos(float newXPos){
     this->xPos = newXPos;
 }
 
-void GraphNode::setYPos(unsigned int newYPos){
+void GraphNode::setYPos(float newYPos){
     this->yPos = newYPos;
 }
 
-unsigned int GraphNode::getXPos(){
+float GraphNode::getXPos(){
     return this->xPos;
 }
 
-unsigned int GraphNode::getYPos(){
+float GraphNode::getYPos(){
     return this->yPos;
 }
 

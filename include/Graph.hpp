@@ -14,5 +14,6 @@ public:
     void removeNode(unsigned int nodeId);
     GraphNode findNode(unsigned int nodeId);
     unsigned int getSize();
+    bool hasNode(unsigned int nodeId);
 };
 #endif
