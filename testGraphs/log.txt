@@ -1,0 +1,51 @@
+Usou radius!
+----GERANDO NOVO GRAFO!----
+Graph num Nodes: 48, num edges:92, Mean Edge Per Node: 1.92
+Degree stats: 3.83(+-1.64), Max degree: 7, Quantis: [3.0, 3.0, 5.0]
+Desenhando grafo teste48.txt
+Terminou de desenhar
+Iterando pelas arestas
+Terminou de salvar dados de teste48.txt
+----GERANDO NOVO GRAFO!----
+Graph num Nodes: 1000, num edges:14321, Mean Edge Per Node: 14.32
+Degree stats: 28.64(+-7.06), Max degree: 49, Quantis: [24.0, 29.0, 33.0]
+Desenhando grafo teste1000.txt
+Terminou de desenhar
+Iterando pelas arestas
+Terminou de salvar dados de teste1000.txt
+----GERANDO NOVO GRAFO!----
+Graph num Nodes: 2000, num edges:15131, Mean Edge Per Node: 7.57
+Degree stats: 15.13(+-4.47), Max degree: 32, Quantis: [12.0, 15.0, 18.0]
+Iterando pelas arestas
+Terminou de salvar dados de teste2000.txt
+----GERANDO NOVO GRAFO!----
+Graph num Nodes: 5000, num edges:94088, Mean Edge Per Node: 18.82
+Degree stats: 37.64(+-7.45), Max degree: 64, Quantis: [33.0, 38.0, 42.0]
+Iterando pelas arestas
+Terminou de salvar dados de teste5000.txt
+----GERANDO NOVO GRAFO!----
+Graph num Nodes: 10000, num edges:61707, Mean Edge Per Node: 6.17
+Degree stats: 12.34(+-3.61), Max degree: 27, Quantis: [10.0, 12.0, 15.0]
+Iterando pelas arestas
+Terminou de salvar dados de teste10000.txt
+----GERANDO NOVO GRAFO!----
+Graph num Nodes: 30000, num edges:556544, Mean Edge Per Node: 18.55
+Degree stats: 37.1(+-6.7), Max degree: 64, Quantis: [33.0, 37.0, 42.0]
+Iterando pelas arestas
+Terminou de salvar dados de teste30000.txt
+----GERANDO NOVO GRAFO!----
+Graph num Nodes: 50000, num edges:1544624, Mean Edge Per Node: 30.89
+Degree stats: 61.78(+-9.02), Max degree: 98, Quantis: [57.0, 62.0, 68.0]
+Iterando pelas arestas
+Terminou de salvar dados de teste50000.txt
+----GERANDO NOVO GRAFO!----
+Graph num Nodes: 80000, num edges:998327, Mean Edge Per Node: 12.48
+Degree stats: 24.96(+-5.17), Max degree: 51, Quantis: [21.0, 25.0, 28.0]
+Iterando pelas arestas
+Terminou de salvar dados de teste80000.txt
+----GERANDO NOVO GRAFO!----
+Graph num Nodes: 100000, num edges:1559440, Mean Edge Per Node: 15.59
+Degree stats: 31.19(+-5.82), Max degree: 55, Quantis: [27.0, 31.0, 35.0]
+Iterando pelas arestas
+Terminou de salvar dados de teste100000.txt
+Terminou tudo!
