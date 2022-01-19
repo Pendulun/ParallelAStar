@@ -1,6 +1,8 @@
 #ifndef __GRAPHNODE_H__
 #define __GRAPHNODE_H__
 #include <unordered_map>
+#include <iterator>
+#include <iostream>
 
 class GraphNode
 {
@@ -19,6 +21,7 @@ public:
     float getXPos();
     float getYPos();
     void setId(unsigned int newId);
+    void printMyInfo();
     unsigned int getId();
     
 };

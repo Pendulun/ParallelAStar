@@ -9,10 +9,10 @@ GRAPHSEARCHERDEPENDENCIES= $(BUILD)Graph.o $(BUILD)SearchGraphNode.o $(BUILD)Sea
 
 all: ${EXEC}
 
-${EXEC}: $(BUILD)main.o $(BUILD)GraphNode.o $(BUILD)GraphSearcher.o $(GRAPHSEARCHERDEPENDENCIES)
-	${CXX} ${CXXFLAGS} -o ${EXEC} $(BUILD)main.o $(BUILD)GraphNode.o $(BUILD)GraphSearcher.o $(GRAPHSEARCHERDEPENDENCIES)
+${EXEC}: $(BUILD)main.o $(BUILD)FileToGraph.o $(BUILD)GraphNode.o $(BUILD)GraphSearcher.o $(GRAPHSEARCHERDEPENDENCIES)
+	${CXX} ${CXXFLAGS} -o ${EXEC} $(BUILD)main.o $(BUILD)GraphNode.o $(BUILD)GraphSearcher.o $(BUILD)FileToGraph.o $(GRAPHSEARCHERDEPENDENCIES)
 
-$(BUILD)main.o: $(SRC)main.cpp $(BUILD)GraphNode.o $(BUILD)SearchGraphNode.o $(BUILD)GraphSearcher.o
+$(BUILD)main.o: $(SRC)main.cpp $(BUILD)FileToGraph.o $(BUILD)GraphNode.o $(BUILD)SearchGraphNode.o $(BUILD)GraphSearcher.o
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)main.cpp -o $(BUILD)main.o
 
 $(BUILD)GraphNode.o: $(SRC)GraphNode.cpp
@@ -38,6 +38,9 @@ $(BUILD)EuclidianHeuristic.o: $(BUILD)Heuristic.o $(SRC)EuclidianHeuristic.cpp
 
 $(BUILD)SearchGraphNodeComparator.o: $(BUILD)SearchGraphNode.o $(SRC)SearchGraphNodeComparator.cpp
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)SearchGraphNodeComparator.cpp -o $(BUILD)SearchGraphNodeComparator.o
+
+$(BUILD)FileToGraph.o: $(BUILD)Graph.o  $(BUILD)GraphNode.o $(SRC)FileToGraph.cpp 
+	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)FileToGraph.cpp -o $(BUILD)FileToGraph.o
 
 
 run: ${EXEC}
