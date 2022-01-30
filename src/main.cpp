@@ -3,6 +3,7 @@
 #include "GraphSearcher.hpp"
 #include "FileToGraph.hpp"
 #include <iostream>
+#include <stack>
 
 void printUsage(){
     std::cout<<"./pastar edgesFile nodePositionsFile originDestinyFile"<<std::endl;
@@ -28,6 +29,7 @@ int main(int argc, char const *argv[])
 
     GraphSearcher graphSearcher;
     graphSearcher.setGraph(&myGraph);
-    graphSearcher.searchInGraph();
+    std::stack<unsigned int> path = graphSearcher.searchInGraph();
+    std::cout<<"Solution Size: "<<path.size()<<std::endl;
     return 0;
 }
