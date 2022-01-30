@@ -99,3 +99,11 @@ void Graph::setInitialPosition(const unsigned int initialNodeIdx){
 void Graph::setFinalPosition(const unsigned int finalNodeIdx){
     this->finalNodeIdx = finalNodeIdx;
 }
+
+unsigned int Graph::getInitialPos(){
+    return this->initialNodeIdx;
+}
+
+unsigned int Graph::getFinalPos(){
+    return this->finalNodeIdx;
+}

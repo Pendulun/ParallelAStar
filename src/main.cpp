@@ -25,9 +25,9 @@ int main(int argc, char const *argv[])
     graphReader.readPositionsForSearch(argv[3], myGraph);
 
     std::cout<<"Finished reading input files!\n";
-    //myGraph.printGraph();
 
     GraphSearcher graphSearcher;
-    graphSearcher.getPathTo(2);
+    graphSearcher.setGraph(&myGraph);
+    graphSearcher.searchInGraph();
     return 0;
 }

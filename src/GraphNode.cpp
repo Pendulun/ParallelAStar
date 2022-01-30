@@ -49,4 +49,7 @@ void GraphNode::setId(unsigned int newId){
 unsigned int GraphNode::getId(){
     return this->id;
 }
-    
+
+std::unordered_map<unsigned int, unsigned int>* GraphNode::getCostToOtherNodes(){
+    return &this->costToOtherNodes;
+}

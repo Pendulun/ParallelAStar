@@ -9,6 +9,6 @@ public:
     Heuristic(/* args */);
     virtual ~Heuristic();
 
-    virtual float calculate(GraphNode firstNode, GraphNode secondNode) = 0;
+    virtual float calculate(GraphNode* firstNode, GraphNode* secondNode) = 0;
 };
 #endif

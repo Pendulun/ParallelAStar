@@ -25,7 +25,7 @@ GraphSearcher::heuristicType GraphSearcher::getHeuristicType(){
     return this->myHeuristicType;
 }
 
-void GraphSearcher::setGraph(Graph newGraph){
+void GraphSearcher::setGraph(Graph* newGraph){
     this->myGraph = newGraph;
 }
 
@@ -33,63 +33,126 @@ void GraphSearcher::setInitialNode(unsigned int initialNodeId){
     this->myInitialNodeId = initialNodeId;
 }
 
-std::list<unsigned int> GraphSearcher::getPathTo(const unsigned int finalNodeId){
-    std::list<unsigned int> pathToFinalNode;
-    pathToFinalNode.clear();
+std::stack<unsigned int> GraphSearcher::searchInGraph(){
+    std::stack<unsigned int> pathToFinalNode;
 
     Heuristic* myHeuristic;
 
     switch (this->myHeuristicType){
-    case GraphSearcher::heuristicType::MANHATTAN:
-        myHeuristic = new ManhattanHeuristic();
-        break;
-    case GraphSearcher::heuristicType::EUCLIDIAN:
-        myHeuristic = new EuclidianHeuristic();
-        break;
-        
-    default:
-        myHeuristic = new ManhattanHeuristic();
-        break;
+        case GraphSearcher::heuristicType::MANHATTAN:
+            myHeuristic = new ManhattanHeuristic();
+            break;
+        case GraphSearcher::heuristicType::EUCLIDIAN:
+            myHeuristic = new EuclidianHeuristic();
+            break;
+            
+        default:
+            myHeuristic = new ManhattanHeuristic();
+            break;
     }
 
     switch (this->mySearchType){
-    case GraphSearcher::searchType::ASTAR:
-        pathToFinalNode = this->astarSearch(myHeuristic, finalNodeId);
-        break;
-    
-    default:
-        pathToFinalNode = this->astarSearch(myHeuristic, finalNodeId);
+        case GraphSearcher::searchType::ASTAR:
+            pathToFinalNode = this->astarSearch(myHeuristic);
+            break;
+        
+        default:
+            pathToFinalNode = this->astarSearch(myHeuristic);
     }
 
     delete myHeuristic;
     return pathToFinalNode;
 }
 
-std::list<unsigned int> GraphSearcher::astarSearch(Heuristic* myHeuristic, const unsigned int finalNodeId){
-    //List of Node Ids to get to the final node
-    std::list<unsigned int> pathToFinalNode;
+std::stack<unsigned int> GraphSearcher::astarSearch(Heuristic* myHeuristic){
+    GraphNode* initialNode = &this->myGraph->findNode(this->myGraph->getInitialPos());
+    GraphNode* finalNode = &this->myGraph->findNode(this->myGraph->getFinalPos());
+
+    //Stack of Node Ids to get to the final node
+    std::stack<unsigned int> pathToFinalNode;
 
     //Priority Queue of the open nodes yet to be explored
-    std::priority_queue<std::pair<float, SearchGraphNode>,std::vector<std::pair<float, SearchGraphNode>>, SearchGraphNodeComparator> openList;
-    
+    BST openList;
+
     //Set of Ids in which its Nodes have been explored
     std::set<unsigned int> closedList;
-    std::set<unsigned int>::iterator closedListIterator;
 
-    for(unsigned int nodeCount = 10; nodeCount > 5; nodeCount--){
-        SearchGraphNode sgn;
-        sgn.setNodeId(nodeCount);
-        sgn.setPathCost(nodeCount+10);
-        openList.push(std::make_pair<>(nodeCount, sgn));
-        closedList.insert(sgn.getNodeId());
+    //Used to delete all SearchGraphNode created
+    std::list<SearchGraphNode*> searchGraphNodescreated;
+
+    SearchGraphNode* initialSearchGraphNode = new SearchGraphNode();
+    initialSearchGraphNode->setGraphNode(initialNode);
+    initialSearchGraphNode->setPathCost(0.0 + myHeuristic->calculate(initialNode, finalNode));
+    openList.addAndCreateNodeFor(initialSearchGraphNode);
+
+    searchGraphNodescreated.push_back(initialSearchGraphNode);
+
+    unsigned int exploredCount = 0;
+    std::cout<<"Its gonna start exploring!\n";
+    while(!openList.empty()){
+        exploredCount++;
+        
+        SearchGraphNode* currNode = openList.popMaxPriorityNode();
+        std::cout<<"----Exploring node id: "<<currNode->getNodeId()<<"----"<<std::endl;
+
+        //If it is the goal
+        if(currNode->getGraphNode()->getId() == finalNode->getId()){
+            std::cout<<"Found the final node!\n";
+            while(currNode != nullptr){
+                pathToFinalNode.push(currNode->getGraphNode()->getId());
+                currNode = currNode->getParentNode();
+            }
+
+            //Delete all SearchGraphNodes created
+            searchGraphNodescreated.erase(searchGraphNodescreated.begin(), searchGraphNodescreated.end());
+
+            std::cout<<"Nodes explored count:"<<exploredCount<<". It found a path!\n";
+            return pathToFinalNode;
+        }
+
+        closedList.insert(currNode->getNodeId());
+
+        std::unordered_map<unsigned int, unsigned int>::iterator neighboorsIt;
+        std::unordered_map<unsigned int, unsigned int>* nodeNeighboors = currNode->getGraphNode()->getCostToOtherNodes();
+        for(neighboorsIt = nodeNeighboors->begin(); neighboorsIt != nodeNeighboors->end(); neighboorsIt++){
+            std::cout<<"Found neigh: "<<neighboorsIt->first;
+
+            //If neighboor is not in the closedList
+            if(closedList.count(neighboorsIt->first) == 0){
+                float calculatedPathCost = currNode->getPathCost() + neighboorsIt->second;
+
+                //If neighboor is not in the openList
+                if(!openList.hasNode(neighboorsIt->first)){
+
+                    SearchGraphNode* newSearchGraphNode = new SearchGraphNode();
+                    newSearchGraphNode->setGraphNode(&(this->myGraph->findNode(neighboorsIt->first)));
+                    newSearchGraphNode->setPathCost(calculatedPathCost);
+                    float heuristic = myHeuristic->calculate(newSearchGraphNode->getGraphNode(), finalNode);
+                    newSearchGraphNode->setTotalCost(newSearchGraphNode->getPathCost() + heuristic);
+                    newSearchGraphNode->setParentNode(currNode);
+
+                    searchGraphNodescreated.push_back(newSearchGraphNode);
+                    openList.addAndCreateNodeFor(newSearchGraphNode);
+                //If neighboor is in the openList
+                }else if(calculatedPathCost < openList.findNode(neighboorsIt->first)->getNode()->getPathCost()){
+                    std::cout<<". It's got a better cost!";
+                    BSTNode* bstNode = openList.findNode(neighboorsIt->first);
+
+                    bstNode->getNode()->setPathCost(calculatedPathCost);
+                    float heuristic = myHeuristic->calculate(bstNode->getNode()->getGraphNode(), finalNode);
+                    bstNode->getNode()->setTotalCost(bstNode->getNode()->getPathCost() + heuristic);
+                    bstNode->getNode()->setParentNode(currNode);
+                    openList.updateNode(bstNode);
+                }
+            }else{
+                std::cout<<". It was already explored!";
+            }
+            std::cout<<std::endl;
+        }
     }
-    SearchGraphNode firstNode = openList.top().second;
-    openList.pop();
-    std::cout<<"O primeiro elemento na OpenList eh: "<<firstNode.getNodeId()<<std::endl;
-
-    closedListIterator = closedList.find(firstNode.getNodeId());
-
-    std::cout<<"Ele esta na ClosedList? "<<(closedListIterator != closedList.end())<<std::endl;
     
+    //Delete all SearchGraphNodes
+    searchGraphNodescreated.erase(searchGraphNodescreated.begin(), searchGraphNodescreated.end());
+    std::cout<<"Nodes explored count:"<<exploredCount<<". It didn't found a path!\n";
     return pathToFinalNode;
 }

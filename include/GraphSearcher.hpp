@@ -5,6 +5,10 @@
 #include <utility>
 #include <vector>
 #include <set>
+#include <stack>
+#include <list>
+#include <unordered_map>
+#include <iterator>
 
 #include <iostream>
 
@@ -14,8 +18,10 @@
 #include "EuclidianHeuristic.hpp"
 #include "SearchGraphNode.hpp"
 #include "SearchGraphNodeComparator.hpp"
+#include "BST.hpp"
+#include "BSTNode.hpp"
 
-#include <list>
+
 
 class GraphSearcher{
 public:
@@ -31,16 +37,16 @@ public:
     void setHeuristicType(heuristicType newHeuristic);
     heuristicType getHeuristicType();
 
-    void setGraph(Graph newGraph);
+    void setGraph(Graph* newGraph);
     void setInitialNode(unsigned int initialNodeId);
-    std::list<unsigned int> getPathTo(const unsigned int finalNodeId);
+    std::stack<unsigned int> searchInGraph();
 
 private:
     GraphSearcher::searchType mySearchType;
     GraphSearcher::heuristicType myHeuristicType;
-    Graph myGraph;
+    Graph* myGraph;
 
     unsigned int myInitialNodeId;
-    std::list<unsigned int> astarSearch(Heuristic* myHeuristic, const unsigned int finalNodeId);
+    std::stack<unsigned int> astarSearch(Heuristic* myHeuristic);
 };
 #endif

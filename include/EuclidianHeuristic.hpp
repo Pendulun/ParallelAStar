@@ -11,6 +11,6 @@ public:
     EuclidianHeuristic(/* args */);
     ~EuclidianHeuristic();
 
-    float calculate(GraphNode firstNode, GraphNode secondNode);
+    float calculate(GraphNode* firstNode, GraphNode* secondNode);
 };
 #endif

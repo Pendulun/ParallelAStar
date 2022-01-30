@@ -4,8 +4,9 @@ CXXFLAGS = -Wall -g
 BUILD=./build/
 SRC=./src/
 INCLUDE=./include/
+GRAPHS=./testGraphs/
 
-GRAPHSEARCHERDEPENDENCIES= $(BUILD)Graph.o $(BUILD)SearchGraphNode.o $(BUILD)SearchGraphNodeComparator.o $(BUILD)Heuristic.o $(BUILD)ManhattanHeuristic.o $(BUILD)EuclidianHeuristic.o
+GRAPHSEARCHERDEPENDENCIES= $(BUILD)Graph.o $(BUILD)SearchGraphNode.o $(BUILD)SearchGraphNodeComparator.o $(BUILD)Heuristic.o $(BUILD)ManhattanHeuristic.o $(BUILD)EuclidianHeuristic.o $(BUILD)BST.o $(BUILD)BSTNode.o
 
 all: ${EXEC}
 
@@ -18,7 +19,7 @@ $(BUILD)main.o: $(SRC)main.cpp $(BUILD)FileToGraph.o $(BUILD)GraphNode.o $(BUILD
 $(BUILD)GraphNode.o: $(SRC)GraphNode.cpp
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)GraphNode.cpp -o $(BUILD)GraphNode.o
 
-$(BUILD)SearchGraphNode.o: $(SRC)SearchGraphNode.cpp
+$(BUILD)SearchGraphNode.o: $(SRC)SearchGraphNode.cpp $(BUILD)GraphNode.o
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)SearchGraphNode.cpp -o $(BUILD)SearchGraphNode.o
 
 $(BUILD)GraphSearcher.o: $(SRC)GraphSearcher.cpp $(GRAPHSEARCHERDEPENDENCIES)
@@ -42,9 +43,18 @@ $(BUILD)SearchGraphNodeComparator.o: $(BUILD)SearchGraphNode.o $(SRC)SearchGraph
 $(BUILD)FileToGraph.o: $(BUILD)Graph.o  $(BUILD)GraphNode.o $(SRC)FileToGraph.cpp 
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)FileToGraph.cpp -o $(BUILD)FileToGraph.o
 
+$(BUILD)BST.o: $(BUILD)BSTNode.o $(BUILD)SearchGraphNode.o $(SRC)BST.cpp 
+	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)BST.cpp -o $(BUILD)BST.o
 
-run: ${EXEC}
-	./${EXEC}
+$(BUILD)BSTNode.o: $(SRC)BSTNode.cpp $(BUILD)SearchGraphNode.o
+	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)BSTNode.cpp -o $(BUILD)BSTNode.o
+
+
+test: ${EXEC}
+	./${EXEC} ${GRAPHS}teste${ARG}.txt ${GRAPHS}nodePosGraph${ARG}.txt ${GRAPHS}nodesToGetPathGraph${ARG}.txt 
+
+memCheck: ${EXEC}
+	valgrind --leak-check=full --show-leak-kinds=all ./${EXEC} ${GRAPHS}teste${ARG}.txt ${GRAPHS}nodePosGraph${ARG}.txt ${GRAPHS}nodesToGetPathGraph${ARG}.txt
 
 clean:
 	rm ${EXEC} -f $(BUILD)*/*.o $(BUILD)*.o

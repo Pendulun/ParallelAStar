@@ -11,6 +11,6 @@ public:
     ManhattanHeuristic(/* args */);
     ~ManhattanHeuristic();
 
-    float calculate(GraphNode firstNode, GraphNode secondNode);
+    float calculate(GraphNode* firstNode, GraphNode* secondNode);
 };
 #endif

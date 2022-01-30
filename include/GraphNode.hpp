@@ -23,6 +23,7 @@ public:
     void setId(unsigned int newId);
     void printMyInfo();
     unsigned int getId();
+    std::unordered_map<unsigned int, unsigned int>* getCostToOtherNodes();
     
 };
 #endif

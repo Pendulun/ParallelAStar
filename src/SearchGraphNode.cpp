@@ -3,6 +3,7 @@
 
 SearchGraphNode::SearchGraphNode(/* args */)
 {
+    this->parentNode = nullptr;
 }
 
 SearchGraphNode::~SearchGraphNode()
@@ -25,10 +26,22 @@ const unsigned int SearchGraphNode::getPathCost(){
     return this->pathCostToNode;
 }
 
-void SearchGraphNode::setNodeId(unsigned int nodeId){
-    this->nodeId = nodeId;
+void SearchGraphNode::setGraphNode(GraphNode* myGraphNode){
+    this->myGraphNode = myGraphNode;
+}
+
+GraphNode* SearchGraphNode::getGraphNode(){
+    return this->myGraphNode;
 }
 
 unsigned int SearchGraphNode::getNodeId(){
-    return this->nodeId;
+    return this->myGraphNode->getId();
+}
+
+void SearchGraphNode::setTotalCost(float totalCost){
+    this->totalCost = totalCost;
+}
+
+const float SearchGraphNode::getTotalCost(){
+    return this->totalCost;
 }
