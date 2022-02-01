@@ -14,13 +14,13 @@ GraphNode::~GraphNode()
  * @param nodeId The node to be reached 
  * @param cost Edge weight
  */
-void GraphNode::addReachableNode(unsigned int nodeId, unsigned int cost){
+void GraphNode::addReachableNode(unsigned int nodeId, double cost){
     this->costToOtherNodes.insert(std::make_pair<>(nodeId, cost));
 }
 
 void GraphNode::printMyInfo(){
     std::cout<<"Node Id: "<<this->id<<" Xpos: "<<this->xPos<<" yPos: "<<this->yPos<<std::endl;
-    std::unordered_map<unsigned int, unsigned int>::iterator myEdgesIterator;
+    std::unordered_map<unsigned int, double>::iterator myEdgesIterator;
     for(myEdgesIterator = this->costToOtherNodes.begin(); myEdgesIterator != this->costToOtherNodes.end(); myEdgesIterator++){
         std::cout<<myEdgesIterator->first<<":"<<myEdgesIterator->second<<std::endl;
     }
@@ -50,6 +50,6 @@ unsigned int GraphNode::getId(){
     return this->id;
 }
 
-std::unordered_map<unsigned int, unsigned int>* GraphNode::getCostToOtherNodes(){
+std::unordered_map<unsigned int, double >* GraphNode::getCostToOtherNodes(){
     return &this->costToOtherNodes;
 }

@@ -6,27 +6,29 @@ BST::BST(){
 }
 
 BST::~BST(){
-    std::queue<BSTNode*> bstNodes;
-    bstNodes.push(this->root);
-    
-    while(!bstNodes.empty()){
-        BSTNode* currNode = bstNodes.front();
+    if(this->root != nullptr){
+        std::queue<BSTNode*> bstNodes;
+        bstNodes.push(this->root);
+        
+        while(!bstNodes.empty()){
+            BSTNode* currNode = bstNodes.front();
 
-        if(currNode->getLeftNode() != nullptr){
-            bstNodes.push(currNode->getLeftNode());
+            if(currNode->getLeftNode() != nullptr){
+                bstNodes.push(currNode->getLeftNode());
+            }
+
+            if(currNode->getRightNode() != nullptr){
+                bstNodes.push(currNode->getRightNode());
+            }
+
+            currNode->setParentNode(nullptr);
+            bstNodes.pop();
+            delete currNode;
         }
 
-        if(currNode->getRightNode() != nullptr){
-            bstNodes.push(currNode->getRightNode());
-        }
-
-        currNode->setParentNode(nullptr);
-        //Calls the currNode destructor
-        bstNodes.pop();
+        this->root = nullptr;
+        this->maxPriorityNode = nullptr;
     }
-
-    this->root = nullptr;
-    this->maxPriorityNode = nullptr;
 
 }
 
@@ -41,8 +43,10 @@ void BST::addNode(BSTNode* node){
     bool onlyWentToLeft = true;
 
     if(this->root == nullptr){
+        //std::cout<<" Its the root node!";
         this->root = node;
     }else{
+        //std::cout<<" Its NOT the root node!";
         BSTNode* currNode = this->root;
 
         while(true){
@@ -72,6 +76,7 @@ void BST::addNode(BSTNode* node){
     }
 
     if(onlyWentToLeft){
+        //std::cout<<" Its the maxPriority one!";
         this->maxPriorityNode = node;
     }
 
@@ -105,12 +110,11 @@ SearchGraphNode* BST::popMaxPriorityNode(){
         return nullptr;
     }
 
-    BSTNode* oldMaxPriority = nullptr;
-    SearchGraphNode* nodeToReturn = nullptr;
+    BSTNode* oldMaxPriority = this->maxPriorityNode;
 
     //If root node is the maxPriority one
     if(this->root == this->maxPriorityNode){
-        std::cout<<" A";
+        //std::cout<<" A";
         
         //Updates Root node
         //As the root node was the maxPriority one, there is no nodes left to it
@@ -120,41 +124,49 @@ SearchGraphNode* BST::popMaxPriorityNode(){
         }
         
         //Updates maxPriorityNode
-        oldMaxPriority = this->maxPriorityNode;
         this->maxPriorityNode = this->findLeftMostFrom(this->root);
     
-    std::cout<<" B";
+    //std::cout<<" B";
     
     }else{
         //Root node is not the maxPriority one
         //The maxPriority node doesnt have a left child
-        std::cout<<" C";
-        //MaxPriority Node doesn't have a right child
-        if(this->maxPriorityNode->getRightNode() == nullptr){
-            std::cout<<" D";
-            //Updates maxPriorityNode
-            oldMaxPriority = this->maxPriorityNode;
-            this->maxPriorityNode = this->maxPriorityNode->getParentNode();
+        //std::cout<<" C";
         
-        //MaxPriority Node has a right child
+        if(this->maxPriorityNode->getRightNode() == nullptr){
+            //MaxPriority Node doesn't have a right child
+            //The new MaxPriority should be oldMaxPriority->parent
+            //std::cout<<" D";
+            //Updates maxPriorityNode
+            this->maxPriorityNode = this->maxPriorityNode->getParentNode();
+            //std::cout<<"NEW MAX: "<<this->maxPriorityNode->getNode()->getNodeId();
+
+            //The oldMaxPriority is, for sure, the left child of its parent
+            oldMaxPriority->getParentNode()->setLeftNode(nullptr);
+        
         }else{
-            std::cout<<" E";
-            oldMaxPriority = this->maxPriorityNode;
+            //MaxPriority Node has a right child
+            //The new MaxPriority should be leftmost(oldMaxPriority->rightChild)
+            //std::cout<<" E";
+
+            oldMaxPriority->getRightNode()->setParentNode(oldMaxPriority->getParentNode());
+            oldMaxPriority->getParentNode()->setLeftNode(oldMaxPriority->getRightNode());
 
             //Updates the maxPriority node
-            //this->maxPriorityNode = this->findLeftMostFrom(this->maxPriorityNode->getRightNode());
-            this->maxPriorityNode = this->maxPriorityNode->getParentNode();
+            this->maxPriorityNode = this->findLeftMostFrom(oldMaxPriority->getRightNode());
 
-            //Updates left child of oldMaxPriority parent node 
-            this->maxPriorityNode->setLeftNode(oldMaxPriority->getRightNode());
         }
+
     }
-    std::cout<<" F";
-    nodeToReturn = oldMaxPriority->getNode();
+    //std::cout<<" F";
+    oldMaxPriority->setRightNode(nullptr);
+    oldMaxPriority->setParentNode(nullptr);
+
+    SearchGraphNode* nodeToReturn = oldMaxPriority->getNode();
     this->idsInBST.erase(nodeToReturn->getNodeId());
 
     delete oldMaxPriority;
-    std::cout<<" G";
+    //std::cout<<" G";
     return nodeToReturn;
 }
 
@@ -181,7 +193,6 @@ bool BST::empty(){
 }
 
 void BST::updateNode(BSTNode* updatedNode){
-    //Assumes that we are not updating the maxPriorityNode
     BSTNode* parentNode = updatedNode->getParentNode();
     BSTNode* leftChild = updatedNode->getLeftNode();
     BSTNode* rightChild = updatedNode->getRightNode();
@@ -192,14 +203,14 @@ void BST::updateNode(BSTNode* updatedNode){
             this->maxPriorityNode = nullptr;
         }else if (leftChild == nullptr && rightChild != nullptr){
             this->root = rightChild;
-            rightChild->setParentNode(nullptr);
+            this->root->setParentNode(nullptr);
             //As the updatedNode doesn't have a left child and it is the root node,
             //it is the maxPriority Node. We have to update it
             this->maxPriorityNode = this->findLeftMostFrom(this->root);
             
         }else if(leftChild != nullptr && rightChild == nullptr){
             this->root = leftChild;
-            leftChild->setParentNode(nullptr);
+            this->root->setParentNode(nullptr);
             //As the node has a left child, it is not the maxPriority one and
             //thus we dont need to update the maxPriorityNode
         
@@ -207,9 +218,9 @@ void BST::updateNode(BSTNode* updatedNode){
         }else{
             //As the node has a left child, it is not the maxPriority one and
             //thus we dont need to update the maxPriorityNode
-            BSTNode* leftMostNode = this->findLeftMostFrom(rightChild);
-            leftChild->setParentNode(leftMostNode);
-            leftMostNode->setLeftNode(leftChild);
+            BSTNode* leftMostR = this->findLeftMostFrom(rightChild);
+            leftMostR->setLeftNode(leftChild);
+            leftChild->setParentNode(leftMostR);
             
             this->root = rightChild;
             rightChild->setParentNode(nullptr);
@@ -220,9 +231,18 @@ void BST::updateNode(BSTNode* updatedNode){
         if(this->doesntHaveChildren(updatedNode)){
             updatedNode->updateMyPlaceAsChildWith(nullptr);
 
+            if(this->maxPriorityNode == updatedNode){
+                this->maxPriorityNode = updatedNode->getParentNode();
+            }
+
         }else if(leftChild == nullptr && rightChild != nullptr){
             updatedNode->updateMyPlaceAsChildWith(rightChild);
             rightChild->setParentNode(parentNode);
+
+            //UpdatedNode could be the maxPriorityNode and yet have a rightChild
+            if(this->maxPriorityNode == updatedNode){
+                this->maxPriorityNode = this->findLeftMostFrom(rightChild);
+            }
 
         }else if(leftChild != nullptr && rightChild == nullptr){
             updatedNode->updateMyPlaceAsChildWith(leftChild);
@@ -230,12 +250,12 @@ void BST::updateNode(BSTNode* updatedNode){
 
         }else if (leftChild != nullptr && rightChild != nullptr){
 
-            BSTNode* rightMost = this->findRightMostFrom(leftChild);
-            rightChild->setParentNode(rightMost);
-            rightMost->setRightNode(rightChild);
+            rightChild->setParentNode(parentNode);
+            updatedNode->updateMyPlaceAsChildWith(rightChild);
 
-            updatedNode->updateMyPlaceAsChildWith(leftChild);
-            leftChild->setParentNode(parentNode);
+            BSTNode* leftMostR = this->findLeftMostFrom(rightChild);
+            leftMostR->setLeftNode(leftChild);
+            leftChild->setParentNode(leftMostR);
 
         }
     }
@@ -250,4 +270,57 @@ void BST::updateNode(BSTNode* updatedNode){
 
 bool BST::doesntHaveChildren(BSTNode* node){
     return node->getLeftNode() == nullptr && node->getRightNode() == nullptr;
+}
+
+void BST::printBST(){
+    unsigned int level = 0;
+
+    std::cout<<"--Printing BST!--\n";
+    std::queue<BSTNode> levelNodes;
+
+    levelNodes.push(*(this->root));
+    while(!levelNodes.empty()){
+        std::cout<<"Level: "<<level<<"\n";
+        std::queue<BSTNode> nextLevelNodes;
+
+        while(!levelNodes.empty()){
+            BSTNode currNode = levelNodes.front();
+            std::cout<<"Node: "<<currNode.getNode()->getNodeId();
+            if(currNode.getParentNode() == nullptr){
+                std::cout<<" Parent: NULL";
+            }else{
+                std::cout<<" Parent: "<<currNode.getParentNode()->getNode()->getNodeId();
+            }
+            
+            std::cout<<" Total Cost: "<<currNode.getTotalCost();
+
+            bool leafNode = true;
+
+            if(currNode.getRightNode() != nullptr){
+                nextLevelNodes.push(*(currNode.getRightNode()));
+                leafNode = false;
+            }
+
+            if(currNode.getLeftNode() != nullptr){
+                nextLevelNodes.push(*(currNode.getLeftNode()));
+                leafNode = false;
+            }
+
+            if(leafNode){
+                std::cout<<" LEAF NODE!";
+            }
+
+            if(this->maxPriorityNode->getNode()->getNodeId() == currNode.getNode()->getNodeId()){
+                std::cout<<" ITS MAXPRIORITY!";
+            }
+            std::cout<<std::endl;
+
+            
+            levelNodes.pop();
+
+        }
+
+        level++;
+        levelNodes = nextLevelNodes;
+    }
 }

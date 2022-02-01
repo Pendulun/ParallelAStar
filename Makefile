@@ -1,4 +1,4 @@
-EXEC=pastar
+EXEC=main
 CXX = g++ 
 CXXFLAGS = -Wall -g
 BUILD=./build/
@@ -6,7 +6,7 @@ SRC=./src/
 INCLUDE=./include/
 GRAPHS=./testGraphs/
 
-GRAPHSEARCHERDEPENDENCIES= $(BUILD)Graph.o $(BUILD)SearchGraphNode.o $(BUILD)SearchGraphNodeComparator.o $(BUILD)Heuristic.o $(BUILD)ManhattanHeuristic.o $(BUILD)EuclidianHeuristic.o $(BUILD)BST.o $(BUILD)BSTNode.o
+GRAPHSEARCHERDEPENDENCIES= $(BUILD)Graph.o $(BUILD)SearchGraphNode.o $(BUILD)SearchGraphNodeComparator.o $(BUILD)Heuristic.o $(BUILD)ManhattanHeuristic.o $(BUILD)EuclidianHeuristic.o $(BUILD)ZeroHeuristic.o $(BUILD)BST.o $(BUILD)BSTNode.o
 
 all: ${EXEC}
 
@@ -36,6 +36,9 @@ $(BUILD)ManhattanHeuristic.o: $(BUILD)Heuristic.o $(SRC)ManhattanHeuristic.cpp
 
 $(BUILD)EuclidianHeuristic.o: $(BUILD)Heuristic.o $(SRC)EuclidianHeuristic.cpp
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)EuclidianHeuristic.cpp -o $(BUILD)EuclidianHeuristic.o
+
+$(BUILD)ZeroHeuristic.o: $(BUILD)Heuristic.o $(SRC)ZeroHeuristic.cpp
+	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)ZeroHeuristic.cpp -o $(BUILD)ZeroHeuristic.o
 
 $(BUILD)SearchGraphNodeComparator.o: $(BUILD)SearchGraphNode.o $(SRC)SearchGraphNodeComparator.cpp
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)SearchGraphNodeComparator.cpp -o $(BUILD)SearchGraphNodeComparator.o

@@ -16,6 +16,7 @@
 #include "Heuristic.hpp"
 #include "ManhattanHeuristic.hpp"
 #include "EuclidianHeuristic.hpp"
+#include "ZeroHeuristic.hpp"
 #include "SearchGraphNode.hpp"
 #include "SearchGraphNodeComparator.hpp"
 #include "BST.hpp"
@@ -26,7 +27,7 @@
 class GraphSearcher{
 public:
     enum searchType{ASTAR};
-    enum heuristicType{MANHATTAN, EUCLIDIAN};
+    enum heuristicType{MANHATTAN, EUCLIDIAN, ZERO};
 
     GraphSearcher();
     ~GraphSearcher();
@@ -40,11 +41,15 @@ public:
     void setGraph(Graph* newGraph);
     void setInitialNode(unsigned int initialNodeId);
     std::stack<unsigned int> searchInGraph();
+    float getTotalCost();
+    float getPathCost();
 
 private:
     GraphSearcher::searchType mySearchType;
     GraphSearcher::heuristicType myHeuristicType;
     Graph* myGraph;
+    float totalCost;
+    float pathCost;
 
     unsigned int myInitialNodeId;
     std::stack<unsigned int> astarSearch(Heuristic* myHeuristic);

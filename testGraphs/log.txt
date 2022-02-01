@@ -1,70 +1,70 @@
 Usou radius!
 ----GERANDO NOVO GRAFO!----
-Graph num Nodes: 48, num edges:92, Mean Edge Per Node: 1.92
-Graph density: 0.08156028368794327
-Degree stats: 3.83(+-1.64), Max degree: 7, Quantis: [3.0, 3.0, 5.0]
-Furthest nodes: leftTop: (23,[0.3745216318224833, 0.03184130674110186]), rightDown:(54,[0.6790519516466869, 0.3721096192953053])
-Desenhando grafo teste48.txt
+Graph num Nodes: 100, num edges:463, Mean Edge Per Node: 4.63
+Graph density: 0.09353535353535354
+Degree stats: 9.26(+-3.68), Max degree: 19, Quantis: [6.2, 9.0, 11.8]
+Furthest nodes: leftTop: (30,(2.8090693877500406, 7.16501345036431)), rightDown:(64,(91.04934551557653, 94.828123385327))
+Desenhando grafo teste100.txt
 Terminou de desenhar
 Iterando pelas arestas
-Terminou de salvar dados de teste48.txt
+Terminou de salvar dados de teste100.txt
 ----GERANDO NOVO GRAFO!----
-Graph num Nodes: 1000, num edges:14321, Mean Edge Per Node: 14.32
-Graph density: 0.02867067067067067
-Degree stats: 28.64(+-7.06), Max degree: 49, Quantis: [24.0, 29.0, 33.0]
-Furthest nodes: leftTop: (307,[0.014467813906463123, 0.038005863977169985]), rightDown:(851,[0.9979084495185244, 0.9803690171371805])
+Graph num Nodes: 1000, num edges:14473, Mean Edge Per Node: 14.47
+Graph density: 0.028974974974974976
+Degree stats: 28.95(+-7.91), Max degree: 52, Quantis: [24.0, 29.0, 34.0]
+Furthest nodes: leftTop: (808,(0.09862525056250071, 14.150512684681383)), rightDown:(139,(87.45829556211815, 99.13011502279278))
 Desenhando grafo teste1000.txt
 Terminou de desenhar
 Iterando pelas arestas
 Terminou de salvar dados de teste1000.txt
 ----GERANDO NOVO GRAFO!----
-Graph num Nodes: 2000, num edges:15131, Mean Edge Per Node: 7.57
-Graph density: 0.007569284642321161
-Degree stats: 15.13(+-4.47), Max degree: 32, Quantis: [12.0, 15.0, 18.0]
-Furthest nodes: leftTop: (1664,[0.002257923800030759, 0.0009264375830345672]), rightDown:(851,[0.9979084495185244, 0.9803690171371805])
+Graph num Nodes: 2000, num edges:28816, Mean Edge Per Node: 14.41
+Graph density: 0.0144152076038019
+Degree stats: 28.82(+-6.42), Max degree: 48, Quantis: [25.0, 29.0, 33.0]
+Furthest nodes: leftTop: (474,(1.0828548997421583, 0.0841867782371497)), rightDown:(960,(99.89931959856298, 98.63228194494177))
 Desenhando grafo teste2000.txt
 Terminou de desenhar
 Iterando pelas arestas
 Terminou de salvar dados de teste2000.txt
 ----GERANDO NOVO GRAFO!----
-Graph num Nodes: 5000, num edges:94088, Mean Edge Per Node: 18.82
-Graph density: 0.007528545709141829
-Degree stats: 37.64(+-7.45), Max degree: 64, Quantis: [33.0, 38.0, 42.0]
-Furthest nodes: leftTop: (1664,[0.002257923800030759, 0.0009264375830345672]), rightDown:(851,[0.9979084495185244, 0.9803690171371805])
+Graph num Nodes: 5000, num edges:94577, Mean Edge Per Node: 18.92
+Graph density: 0.0075676735347069415
+Degree stats: 37.83(+-7.45), Max degree: 61, Quantis: [33.0, 38.0, 43.0]
+Furthest nodes: leftTop: (244,(0.8055160915750981, 2.899304865072072)), rightDown:(4876,(97.61870834918068, 99.21646940723134))
 Iterando pelas arestas
 Terminou de salvar dados de teste5000.txt
 ----GERANDO NOVO GRAFO!----
-Graph num Nodes: 10000, num edges:61707, Mean Edge Per Node: 6.17
-Graph density: 0.0012342634263426344
-Degree stats: 12.34(+-3.61), Max degree: 27, Quantis: [10.0, 12.0, 15.0]
-Furthest nodes: leftTop: (1664,[0.002257923800030759, 0.0009264375830345672]), rightDown:(851,[0.9979084495185244, 0.9803690171371805])
+Graph num Nodes: 10000, num edges:138385, Mean Edge Per Node: 13.84
+Graph density: 0.002767976797679768
+Degree stats: 27.68(+-6.06), Max degree: 54, Quantis: [24.0, 28.0, 31.0]
+Furthest nodes: leftTop: (4007,(0.1657948629399275, 0.3622954809171186)), rightDown:(7326,(99.7114462896849, 97.11366035770955))
 Iterando pelas arestas
 Terminou de salvar dados de teste10000.txt
 ----GERANDO NOVO GRAFO!----
-Graph num Nodes: 30000, num edges:556544, Mean Edge Per Node: 18.55
-Graph density: 0.0012368056713001545
-Degree stats: 37.1(+-6.7), Max degree: 64, Quantis: [33.0, 37.0, 42.0]
-Furthest nodes: leftTop: (17586,[7.583078286654832e-05, 0.000281521358896919]), rightDown:(851,[0.9979084495185244, 0.9803690171371805])
+Graph num Nodes: 30000, num edges:556424, Mean Edge Per Node: 18.55
+Graph density: 0.0012365389957443027
+Degree stats: 37.09(+-6.72), Max degree: 63, Quantis: [33.0, 37.0, 41.0]
+Furthest nodes: leftTop: (10224,(1.4000894747771664, 0.13019920420040965)), rightDown:(12945,(99.56243244249508, 99.98381458786501))
 Iterando pelas arestas
 Terminou de salvar dados de teste30000.txt
 ----GERANDO NOVO GRAFO!----
-Graph num Nodes: 50000, num edges:1544624, Mean Edge Per Node: 30.89
-Graph density: 0.0012357239144782895
-Degree stats: 61.78(+-9.02), Max degree: 98, Quantis: [57.0, 62.0, 68.0]
-Furthest nodes: leftTop: (17586,[7.583078286654832e-05, 0.000281521358896919]), rightDown:(851,[0.9979084495185244, 0.9803690171371805])
+Graph num Nodes: 50000, num edges:871422, Mean Edge Per Node: 17.43
+Graph density: 0.0006971515430308606
+Degree stats: 34.86(+-6.17), Max degree: 60, Quantis: [31.0, 35.0, 39.0]
+Furthest nodes: leftTop: (46826,(0.09271637351417894, 0.22985799241117544)), rightDown:(29731,(99.06667648395472, 99.96055545471378))
 Iterando pelas arestas
 Terminou de salvar dados de teste50000.txt
 ----GERANDO NOVO GRAFO!----
-Graph num Nodes: 80000, num edges:998327, Mean Edge Per Node: 12.48
-Graph density: 0.0003119810872635908
-Degree stats: 24.96(+-5.17), Max degree: 51, Quantis: [21.0, 25.0, 28.0]
-Furthest nodes: leftTop: (17586,[7.583078286654832e-05, 0.000281521358896919]), rightDown:(61862,[0.9992829412821017, 0.9937916421233771])
+Graph num Nodes: 80000, num edges:996711, Mean Edge Per Node: 12.46
+Graph density: 0.0003114760809510119
+Degree stats: 24.92(+-5.1), Max degree: 47, Quantis: [21.0, 25.0, 28.0]
+Furthest nodes: leftTop: (724,(0.2649135498877131, 0.29357069784288203)), rightDown:(27640,(99.98512771813512, 99.35845249637566))
 Iterando pelas arestas
 Terminou de salvar dados de teste80000.txt
 ----GERANDO NOVO GRAFO!----
-Graph num Nodes: 100000, num edges:1559440, Mean Edge Per Node: 15.59
-Graph density: 0.0003118911189111891
-Degree stats: 31.19(+-5.82), Max degree: 55, Quantis: [27.0, 31.0, 35.0]
-Furthest nodes: leftTop: (17586,[7.583078286654832e-05, 0.000281521358896919]), rightDown:(61862,[0.9992829412821017, 0.9937916421233771])
+Graph num Nodes: 100000, num edges:998831, Mean Edge Per Node: 9.99
+Graph density: 0.00019976819768197682
+Degree stats: 19.98(+-4.59), Max degree: 44, Quantis: [17.0, 20.0, 23.0]
+Furthest nodes: leftTop: (35826,(0.2859328803710759, 0.02714174035193251)), rightDown:(57827,(97.67323699628271, 99.98133620995495))
 Iterando pelas arestas
 Terminou de salvar dados de teste100000.txt

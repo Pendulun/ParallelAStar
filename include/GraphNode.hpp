@@ -7,7 +7,7 @@
 class GraphNode
 {
 private:
-    std::unordered_map<unsigned int, unsigned int> costToOtherNodes;
+    std::unordered_map<unsigned int, double> costToOtherNodes;
     float xPos;
     float yPos;
     unsigned int id;
@@ -15,7 +15,7 @@ private:
 public:
     GraphNode(/* args */);
     ~GraphNode();
-    void addReachableNode(unsigned int nodeId, unsigned int cost);
+    void addReachableNode(unsigned int nodeId, double cost);
     void setXPos(float newXPos);
     void setYPos(float newYPos);
     float getXPos();
@@ -23,7 +23,7 @@ public:
     void setId(unsigned int newId);
     void printMyInfo();
     unsigned int getId();
-    std::unordered_map<unsigned int, unsigned int>* getCostToOtherNodes();
+    std::unordered_map<unsigned int, double>* getCostToOtherNodes();
     
 };
 #endif

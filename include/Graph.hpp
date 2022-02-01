@@ -17,8 +17,8 @@ public:
     void removeNode(unsigned int nodeId);
     GraphNode& findNode(unsigned int nodeId);
     
-    void addDirectedEdge(unsigned int fromNodeIdx, unsigned int toNodeIdx, float weight);
-    void addUndirectedEgde(unsigned int fromNodeIdx, unsigned int toNodeIdx, float weight);
+    void addDirectedEdge(unsigned int fromNodeIdx, unsigned int toNodeIdx, double weight);
+    void addUndirectedEgde(unsigned int fromNodeIdx, unsigned int toNodeIdx, double weight);
     bool createNodeIfDoesntExists(unsigned int nodeId);
     
     unsigned int getSize();

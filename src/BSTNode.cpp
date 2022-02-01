@@ -43,7 +43,7 @@ BSTNode* BSTNode::getParentNode(){
     return this->parentNode;
 }
 
-float BSTNode::getTotalCost(){
+double BSTNode::getTotalCost(){
     return this->getNode()->getTotalCost();
 }
 

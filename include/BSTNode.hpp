@@ -20,7 +20,7 @@ class BSTNode{
         BSTNode* getLeftNode();
         BSTNode* getParentNode();
         BSTNode* getRightNode();
-        float getTotalCost();
+        double getTotalCost();
         void updateMyPlaceAsChildWith(BSTNode* newNode);
 };
 

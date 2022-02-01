@@ -24,6 +24,7 @@ class BST{
         BSTNode* findNode(unsigned int nodeId);
         void updateNode(BSTNode* updatedNode);
         bool empty();
+        void printBST();
         BST();
         ~BST();
 };

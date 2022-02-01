@@ -2,6 +2,7 @@
 #define __MANHATTANHEURISTIC_H__
 #include "Heuristic.hpp"
 #include <cstdlib>
+#include <iostream>
 
 class ManhattanHeuristic: public Heuristic
 {

@@ -14,7 +14,7 @@ void SearchGraphNode::setParentNode(SearchGraphNode* newParentNode){
     this->parentNode = newParentNode;
 }
 
-void SearchGraphNode::setPathCost(const unsigned int pathCost){
+void SearchGraphNode::setPathCost(const double pathCost){
     this->pathCostToNode = pathCost;
 }
 
@@ -22,7 +22,7 @@ SearchGraphNode* SearchGraphNode::getParentNode(){
     return this->parentNode;
 }
 
-const unsigned int SearchGraphNode::getPathCost(){
+const double SearchGraphNode::getPathCost(){
     return this->pathCostToNode;
 }
 
@@ -38,10 +38,10 @@ unsigned int SearchGraphNode::getNodeId(){
     return this->myGraphNode->getId();
 }
 
-void SearchGraphNode::setTotalCost(float totalCost){
+void SearchGraphNode::setTotalCost(double totalCost){
     this->totalCost = totalCost;
 }
 
-const float SearchGraphNode::getTotalCost(){
+const double SearchGraphNode::getTotalCost(){
     return this->totalCost;
 }

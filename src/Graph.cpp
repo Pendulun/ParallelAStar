@@ -32,7 +32,7 @@ void Graph::removeNode(unsigned int nodeId){
  * @param toNodeIdx 
  * @param weight 
  */
-void Graph::addDirectedEdge(unsigned int fromNodeIdx, unsigned int toNodeIdx, float weight){
+void Graph::addDirectedEdge(unsigned int fromNodeIdx, unsigned int toNodeIdx, double weight){
         //Adiciono uma aresta para outro nó no grafo
         this->createNodeIfDoesntExists(fromNodeIdx);
 
@@ -49,7 +49,7 @@ void Graph::addDirectedEdge(unsigned int fromNodeIdx, unsigned int toNodeIdx, fl
  * @param toNodeIdx 
  * @param weight 
  */
-void Graph::addUndirectedEgde(unsigned int fromNodeIdx, unsigned int toNodeIdx, float weight){
+void Graph::addUndirectedEgde(unsigned int fromNodeIdx, unsigned int toNodeIdx, double weight){
     this->addDirectedEdge(fromNodeIdx, toNodeIdx, weight);
     this->addDirectedEdge(toNodeIdx, fromNodeIdx, weight);
 }
