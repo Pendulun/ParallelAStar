@@ -1,7 +1,7 @@
 #ifndef __MANHATTANHEURISTIC_H__
 #define __MANHATTANHEURISTIC_H__
 #include "Heuristic.hpp"
-#include <cstdlib>
+#include <cmath>
 #include <iostream>
 
 class ManhattanHeuristic: public Heuristic

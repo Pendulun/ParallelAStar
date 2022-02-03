@@ -95,10 +95,10 @@ std::stack<unsigned int> GraphSearcher::astarSearch(Heuristic* myHeuristic){
 
     SearchGraphNode* initialSearchGraphNode = new SearchGraphNode();
     initialSearchGraphNode->setGraphNode(initialNode);
-    initialSearchGraphNode->setPathCost(0.0 + myHeuristic->calculate(initialNode, finalNode));
-    initialSearchGraphNode->setTotalCost(0);
+    initialSearchGraphNode->setPathCost(0.0);
+    initialSearchGraphNode->setTotalCost(0 + myHeuristic->calculate(initialNode, finalNode));
     openList->addAndCreateNodeFor(initialSearchGraphNode);
-    openList->printBST();
+    //openList->printBST();
 
     searchGraphNodescreated.push_back(initialSearchGraphNode);
 

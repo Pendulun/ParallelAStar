@@ -1,7 +1,7 @@
 #include "ManhattanHeuristic.hpp"
 
 float ManhattanHeuristic::calculate(GraphNode* firstNode, GraphNode* secondNode){
-    float result = abs(firstNode->getXPos() - secondNode->getXPos()) + abs(firstNode->getYPos() - secondNode->getYPos());
+    float result = std::abs(firstNode->getXPos() - secondNode->getXPos()) + std::abs(firstNode->getYPos() - secondNode->getYPos());
     return result;
 }
 
