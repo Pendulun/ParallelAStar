@@ -47,6 +47,10 @@ double BSTNode::getTotalCost(){
     return this->getNode()->getTotalCost();
 }
 
+double BSTNode::getPathCost(){
+    return this->getNode()->getPathCost();
+}
+
 void BSTNode::updateMyPlaceAsChildWith(BSTNode* newNode){
     if(this->parentNode->getLeftNode() == this){
         this->parentNode->setLeftNode(newNode);

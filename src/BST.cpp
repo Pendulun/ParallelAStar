@@ -113,7 +113,7 @@ SearchGraphNode* BST::popMaxPriorityNode(){
     BSTNode* oldMaxPriority = this->maxPriorityNode;
 
     //If root node is the maxPriority one
-    if(this->root == this->maxPriorityNode){
+    if(this->root->getNode()->getNodeId() == this->maxPriorityNode->getNode()->getNodeId()){
         //std::cout<<" A";
         
         //Updates Root node
@@ -197,7 +197,7 @@ void BST::updateNode(BSTNode* updatedNode){
     BSTNode* leftChild = updatedNode->getLeftNode();
     BSTNode* rightChild = updatedNode->getRightNode();
 
-    if(updatedNode == this->root){
+    if(updatedNode->getNode()->getNodeId() == this->root->getNode()->getNodeId()){
         if (this->doesntHaveChildren(updatedNode)) {
             this->root = nullptr;
             this->maxPriorityNode = nullptr;
@@ -231,7 +231,7 @@ void BST::updateNode(BSTNode* updatedNode){
         if(this->doesntHaveChildren(updatedNode)){
             updatedNode->updateMyPlaceAsChildWith(nullptr);
 
-            if(this->maxPriorityNode == updatedNode){
+            if(this->maxPriorityNode->getNode()->getNodeId() == updatedNode->getNode()->getNodeId()){
                 this->maxPriorityNode = updatedNode->getParentNode();
             }
 
@@ -240,7 +240,7 @@ void BST::updateNode(BSTNode* updatedNode){
             rightChild->setParentNode(parentNode);
 
             //UpdatedNode could be the maxPriorityNode and yet have a rightChild
-            if(this->maxPriorityNode == updatedNode){
+            if(this->maxPriorityNode->getNode()->getNodeId() == updatedNode->getNode()->getNodeId()){
                 this->maxPriorityNode = this->findLeftMostFrom(rightChild);
             }
 

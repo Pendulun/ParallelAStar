@@ -1,28 +1,38 @@
 #include "SearchGraphNode.hpp"
 
 
-SearchGraphNode::SearchGraphNode(/* args */)
-{
+SearchGraphNode::SearchGraphNode(/* args */){
     this->parentNode = nullptr;
+    this->pathCostToNode = 0.0;
+    this->totalCost = 0.0;
+    this->myGraphNode = nullptr;
+    this->lastActionCost = 0.0;
 }
 
-SearchGraphNode::~SearchGraphNode()
-{
+SearchGraphNode::~SearchGraphNode(){
 }
 
 void SearchGraphNode::setParentNode(SearchGraphNode* newParentNode){
     this->parentNode = newParentNode;
 }
 
-void SearchGraphNode::setPathCost(const double pathCost){
+void SearchGraphNode::setPathCost(double pathCost){
     this->pathCostToNode = pathCost;
+}
+
+void SearchGraphNode::setLastActionCost(double lastActionCost){
+    this->lastActionCost = lastActionCost;
+}
+
+double SearchGraphNode::getLastActionCost(){
+    return this->lastActionCost;
 }
 
 SearchGraphNode* SearchGraphNode::getParentNode(){
     return this->parentNode;
 }
 
-const double SearchGraphNode::getPathCost(){
+double SearchGraphNode::getPathCost(){
     return this->pathCostToNode;
 }
 
@@ -42,6 +52,6 @@ void SearchGraphNode::setTotalCost(double totalCost){
     this->totalCost = totalCost;
 }
 
-const double SearchGraphNode::getTotalCost(){
+double SearchGraphNode::getTotalCost(){
     return this->totalCost;
 }

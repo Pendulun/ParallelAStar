@@ -7,17 +7,20 @@ private:
     SearchGraphNode* parentNode;
     double pathCostToNode;
     double totalCost;
+    double lastActionCost;
     GraphNode* myGraphNode;
 public:
     SearchGraphNode();
     ~SearchGraphNode();
     void setParentNode(SearchGraphNode* newParentNode);
-    void setPathCost(const double pathCost);
+    void setPathCost(double pathCost);
     void setTotalCost(double totalCost);
+    void setLastActionCost(double lastActionCost);
     void setGraphNode(GraphNode* myGraphNode);
     SearchGraphNode* getParentNode();
-    const double getPathCost();
-    const double getTotalCost();
+    double getPathCost();
+    double getTotalCost();
+    double getLastActionCost();
     GraphNode* getGraphNode();
     unsigned int getNodeId();
 };
