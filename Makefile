@@ -6,7 +6,7 @@ SRC=./src/
 INCLUDE=./include/
 GRAPHS=./testGraphs/
 
-GRAPHSEARCHERDEPENDENCIES= $(BUILD)Graph.o $(BUILD)SearchGraphNode.o $(BUILD)SearchGraphNodeComparator.o $(BUILD)Heuristic.o $(BUILD)ManhattanHeuristic.o $(BUILD)EuclidianHeuristic.o $(BUILD)ZeroHeuristic.o $(BUILD)BST.o $(BUILD)BSTNode.o
+GRAPHSEARCHERDEPENDENCIES= $(BUILD)Graph.o $(BUILD)SearchGraphNode.o $(BUILD)Heuristic.o $(BUILD)ManhattanHeuristic.o $(BUILD)EuclidianHeuristic.o $(BUILD)ZeroHeuristic.o $(BUILD)BST.o $(BUILD)BSTNode.o
 
 all: ${EXEC}
 
@@ -39,9 +39,6 @@ $(BUILD)EuclidianHeuristic.o: $(BUILD)Heuristic.o $(SRC)EuclidianHeuristic.cpp
 
 $(BUILD)ZeroHeuristic.o: $(BUILD)Heuristic.o $(SRC)ZeroHeuristic.cpp
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)ZeroHeuristic.cpp -o $(BUILD)ZeroHeuristic.o
-
-$(BUILD)SearchGraphNodeComparator.o: $(BUILD)SearchGraphNode.o $(SRC)SearchGraphNodeComparator.cpp
-	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)SearchGraphNodeComparator.cpp -o $(BUILD)SearchGraphNodeComparator.o
 
 $(BUILD)FileToGraph.o: $(BUILD)Graph.o  $(BUILD)GraphNode.o $(SRC)FileToGraph.cpp 
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)FileToGraph.cpp -o $(BUILD)FileToGraph.o

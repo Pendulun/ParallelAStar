@@ -30,7 +30,7 @@ int main(int argc, char const *argv[])
 
     GraphSearcher graphSearcher;
     graphSearcher.setGraph(&myGraph);
-    graphSearcher.setHeuristicType(GraphSearcher::heuristicType::EUCLIDIAN);
+    //graphSearcher.setHeuristicType(GraphSearcher::heuristicType::EUCLIDIAN);
     //graphSearcher.setHeuristicType(GraphSearcher::heuristicType::ZERO);
     std::stack<unsigned int> path = graphSearcher.searchInGraph();
     if(!path.empty()){
