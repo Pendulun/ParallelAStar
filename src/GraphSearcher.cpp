@@ -5,6 +5,7 @@ GraphSearcher::GraphSearcher(){
     this->myHeuristicType = MANHATTAN;
     this->myInitialNodeId = 0;
     this->totalCost = 0.0;
+    this->nodesExploredCount = 0;
 }
 
 GraphSearcher::~GraphSearcher(){
@@ -40,6 +41,10 @@ float GraphSearcher::getTotalCost(){
 
 float GraphSearcher::getPathCost(){
     return this->pathCost;
+}
+
+unsigned int GraphSearcher::getNodesExploredCount(){
+    return this->nodesExploredCount;
 }
 
 std::stack<unsigned int> GraphSearcher::searchInGraph(){
@@ -81,11 +86,11 @@ std::stack<unsigned int> GraphSearcher::astarSearch(Heuristic* myHeuristic){
     GraphNode* initialNode = &this->myGraph->findNode(this->myGraph->getInitialPos());
     GraphNode* finalNode = &this->myGraph->findNode(this->myGraph->getFinalPos());
 
-    //Stack of Node Ids to get to the final node
-    std::stack<unsigned int> pathToFinalNode;
-
     //Priority Queue of the open nodes yet to be explored
     BST* openList = new BST();
+
+    //Stack of Node Ids to get to the final node
+    std::stack<unsigned int> pathToFinalNode;
 
     //Set of Ids in which its Nodes have been explored
     std::set<unsigned int> closedList;
@@ -112,26 +117,19 @@ std::stack<unsigned int> GraphSearcher::astarSearch(Heuristic* myHeuristic){
 
         //If it is the goal
         if(currNode->getGraphNode()->getId() == finalNode->getId()){
-            std::cout<<"Found the final node!\n";
-            //Conseguir o custo total
             this->totalCost = currNode->getTotalCost();
             this->pathCost = currNode->getPathCost();
+            this->nodesExploredCount = exploredCount;
 
-            while(currNode != nullptr){
-                pathToFinalNode.push(currNode->getGraphNode()->getId());
-                //std::cout<<"Last action to node: "<<currNode->getNodeId()<<" "<<currNode->getLastActionCost()<<std::endl;
-                currNode = currNode->getParentNode();
-            }
-
-            std::cout<<"Nodes explored count:"<<exploredCount<<". It found a path!\n";
+            pathToFinalNode = this->getPathTo(currNode);
             
             //Delete all SearchGraphNodes created
             while(!searchGraphNodescreated.empty()){
                 delete searchGraphNodescreated.front();
                 searchGraphNodescreated.pop_front();
             }            
-
             delete openList;
+
             return pathToFinalNode;
         }
 
@@ -143,7 +141,7 @@ std::stack<unsigned int> GraphSearcher::astarSearch(Heuristic* myHeuristic){
 
             //If neighboor is not in the closedList
             if(closedList.count(neighboorsIt.first) == 0){
-                double calculatedPathCost = currNode->getPathCost() + neighboorsIt.second;
+                double pathCostToNeighboor = currNode->getPathCost() + neighboorsIt.second;
 
                 //If neighboor is not in the openList
                 if(!openList->hasNode(neighboorsIt.first)){
@@ -151,30 +149,30 @@ std::stack<unsigned int> GraphSearcher::astarSearch(Heuristic* myHeuristic){
                     SearchGraphNode* newSearchGraphNode = new SearchGraphNode();
                     newSearchGraphNode->setGraphNode(&(this->myGraph->findNode(neighboorsIt.first)));
                     newSearchGraphNode->setLastActionCost(neighboorsIt.second);
-                    newSearchGraphNode->setPathCost(calculatedPathCost);
+                    newSearchGraphNode->setPathCost(pathCostToNeighboor);
                     float heuristic = myHeuristic->calculate(newSearchGraphNode->getGraphNode(), finalNode);
-                    newSearchGraphNode->setTotalCost(calculatedPathCost + heuristic);
+                    newSearchGraphNode->setTotalCost(pathCostToNeighboor + heuristic);
                     newSearchGraphNode->setParentNode(currNode);
 
                     searchGraphNodescreated.push_back(newSearchGraphNode);
                     openList->addAndCreateNodeFor(newSearchGraphNode);
                 
-                }else if(calculatedPathCost < openList->findNode(neighboorsIt.first)->getPathCost()){
+                }else if(pathCostToNeighboor < openList->findNode(neighboorsIt.first)->getPathCost()){
                     //If neighboor is in the openList
                     //and its saved path cost is greater than current path cost to it
 
                     BSTNode* bstNode = openList->findNode(neighboorsIt.first);
                     SearchGraphNode* searchNode = bstNode->getNode();
 
-                    searchNode->setPathCost(calculatedPathCost);
+                    searchNode->setPathCost(pathCostToNeighboor);
                     float heuristic = myHeuristic->calculate(searchNode->getGraphNode(), finalNode);
-                    searchNode->setTotalCost(calculatedPathCost + heuristic);
+                    searchNode->setTotalCost(pathCostToNeighboor + heuristic);
                     searchNode->setLastActionCost(neighboorsIt.second);
                     searchNode->setParentNode(currNode);
+
                     openList->updateNode(bstNode);
                 }
             }
-            //openList->printBST();
         }
     }
     
@@ -184,6 +182,17 @@ std::stack<unsigned int> GraphSearcher::astarSearch(Heuristic* myHeuristic){
         searchGraphNodescreated.pop_front();
     }
     delete openList;
-    std::cout<<"Nodes explored count:"<<exploredCount<<". It didn't found a path!\n";
+
     return pathToFinalNode;
+}
+
+std::stack<unsigned int> GraphSearcher::getPathTo(SearchGraphNode* finalNode){
+    std::stack<unsigned int> pathIds;
+    SearchGraphNode* currNode = finalNode;
+    while(currNode != nullptr){
+        pathIds.push(currNode->getGraphNode()->getId());
+        currNode = currNode->getParentNode();
+    }
+
+    return pathIds;
 }

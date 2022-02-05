@@ -33,19 +33,25 @@ int main(int argc, char const *argv[])
     graphSearcher.setHeuristicType(GraphSearcher::heuristicType::EUCLIDIAN);
     //graphSearcher.setHeuristicType(GraphSearcher::heuristicType::ZERO);
     std::stack<unsigned int> path = graphSearcher.searchInGraph();
-    std::cout<<"Solution Size: "<<path.size()<<std::endl;
+    if(!path.empty()){
+        std::cout<<"Nodes explored count: "<<graphSearch.getNodesExploredCount()<<std::endl;
+        std::cout<<"Solution Size: "<<path.size()<<std::endl;
 
-    std::cout<<"[";
-    while(!path.empty()){
-        unsigned int nodeId = path.top();
-        path.pop();
-        std::cout<<nodeId<<", ";
+        std::cout<<"[";
+        while(!path.empty()){
+            unsigned int nodeId = path.top();
+            path.pop();
+            std::cout<<nodeId<<", ";
+        }
+
+        std::cout<<"]\n";
+
+        std::cout<<"Total cost: "<<graphSearcher.getTotalCost()<<std::endl;
+        std::cout<<"Path cost: "<<graphSearcher.getPathCost()<<std::endl;
+    }else{
+        std::cout<<"Could not find a path!\n";
     }
-
-    std::cout<<"]\n";
-
-    std::cout<<"Total cost: "<<graphSearcher.getTotalCost()<<std::endl;
-    std::cout<<"Path cost: "<<graphSearcher.getPathCost()<<std::endl;
+    
 
     return 0;
 }

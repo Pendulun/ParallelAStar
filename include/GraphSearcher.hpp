@@ -43,6 +43,7 @@ public:
     std::stack<unsigned int> searchInGraph();
     float getTotalCost();
     float getPathCost();
+    unsigned int getNodesExploredCount();
 
 private:
     GraphSearcher::searchType mySearchType;
@@ -50,8 +51,10 @@ private:
     Graph* myGraph;
     float totalCost;
     float pathCost;
+    unsigned int nodesExploredCount;
 
     unsigned int myInitialNodeId;
     std::stack<unsigned int> astarSearch(Heuristic* myHeuristic);
+    std::stack<unsigned int> getPathTo(SearchGraphNode* finalNode);
 };
 #endif
