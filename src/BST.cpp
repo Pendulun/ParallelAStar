@@ -104,6 +104,10 @@ BSTNode* BST::findRightMostFrom(BSTNode* rootNode){
     return currNode;
 }
 
+bool BST::isMaximumPriority(BSTNode* node){
+    return node->getNode()->getNodeId() == this->maxPriorityNode->getNode()->getNodeId();
+}
+
 SearchGraphNode* BST::popMaxPriorityNode(){
 
     if(this->maxPriorityNode == nullptr){
@@ -112,9 +116,7 @@ SearchGraphNode* BST::popMaxPriorityNode(){
 
     BSTNode* oldMaxPriority = this->maxPriorityNode;
 
-    //If root node is the maxPriority one
-    if(this->root->getNode()->getNodeId() == this->maxPriorityNode->getNode()->getNodeId()){
-        //std::cout<<" A";
+    if(this->isMaximumPriority(this->root)){
         
         //Updates Root node
         //As the root node was the maxPriority one, there is no nodes left to it
@@ -123,23 +125,17 @@ SearchGraphNode* BST::popMaxPriorityNode(){
             this->root->setParentNode(nullptr);
         }
         
-        //Updates maxPriorityNode
         this->maxPriorityNode = this->findLeftMostFrom(this->root);
-    
-    //std::cout<<" B";
     
     }else{
         //Root node is not the maxPriority one
         //The maxPriority node doesnt have a left child
-        //std::cout<<" C";
         
         if(this->maxPriorityNode->getRightNode() == nullptr){
             //MaxPriority Node doesn't have a right child
             //The new MaxPriority should be oldMaxPriority->parent
-            //std::cout<<" D";
-            //Updates maxPriorityNode
-            this->maxPriorityNode = this->maxPriorityNode->getParentNode();
-            //std::cout<<"NEW MAX: "<<this->maxPriorityNode->getNode()->getNodeId();
+
+            this->maxPriorityNode = oldMaxPriority->getParentNode();
 
             //The oldMaxPriority is, for sure, the left child of its parent
             oldMaxPriority->getParentNode()->setLeftNode(nullptr);
@@ -147,18 +143,16 @@ SearchGraphNode* BST::popMaxPriorityNode(){
         }else{
             //MaxPriority Node has a right child
             //The new MaxPriority should be leftmost(oldMaxPriority->rightChild)
-            //std::cout<<" E";
 
             oldMaxPriority->getRightNode()->setParentNode(oldMaxPriority->getParentNode());
             oldMaxPriority->getParentNode()->setLeftNode(oldMaxPriority->getRightNode());
 
-            //Updates the maxPriority node
             this->maxPriorityNode = this->findLeftMostFrom(oldMaxPriority->getRightNode());
 
         }
 
     }
-    //std::cout<<" F";
+
     oldMaxPriority->setRightNode(nullptr);
     oldMaxPriority->setParentNode(nullptr);
 
@@ -166,7 +160,7 @@ SearchGraphNode* BST::popMaxPriorityNode(){
     this->idsInBST.erase(nodeToReturn->getNodeId());
 
     delete oldMaxPriority;
-    //std::cout<<" G";
+
     return nodeToReturn;
 }
 
@@ -192,12 +186,16 @@ bool BST::empty(){
     return this->idsInBST.empty();
 }
 
+bool BST::isRoot(BSTNode* node){
+    return node->getNode()->getNodeId() == this->root->getNode()->getNodeId();
+}
+
 void BST::updateNode(BSTNode* updatedNode){
     BSTNode* parentNode = updatedNode->getParentNode();
     BSTNode* leftChild = updatedNode->getLeftNode();
     BSTNode* rightChild = updatedNode->getRightNode();
 
-    if(updatedNode->getNode()->getNodeId() == this->root->getNode()->getNodeId()){
+    if(this->isRoot(updatedNode)){
         if (this->doesntHaveChildren(updatedNode)) {
             this->root = nullptr;
             this->maxPriorityNode = nullptr;
@@ -226,12 +224,12 @@ void BST::updateNode(BSTNode* updatedNode){
             rightChild->setParentNode(nullptr);
 
         }
-    //If it is not the root node
+
     }else{
         if(this->doesntHaveChildren(updatedNode)){
             updatedNode->updateMyPlaceAsChildWith(nullptr);
 
-            if(this->maxPriorityNode->getNode()->getNodeId() == updatedNode->getNode()->getNodeId()){
+            if(this->isMaximumPriority(updatedNode)){
                 this->maxPriorityNode = updatedNode->getParentNode();
             }
 
@@ -240,7 +238,7 @@ void BST::updateNode(BSTNode* updatedNode){
             rightChild->setParentNode(parentNode);
 
             //UpdatedNode could be the maxPriorityNode and yet have a rightChild
-            if(this->maxPriorityNode->getNode()->getNodeId() == updatedNode->getNode()->getNodeId()){
+            if(this->isMaximumPriority(updatedNode)){
                 this->maxPriorityNode = this->findLeftMostFrom(rightChild);
             }
 

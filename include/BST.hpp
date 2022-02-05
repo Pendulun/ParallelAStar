@@ -17,6 +17,8 @@ class BST{
         BSTNode* findRightMostFrom(BSTNode* rootNode);
         void addNode(BSTNode* node);
         bool doesntHaveChildren(BSTNode* node);
+        bool isMaximumPriority(BSTNode* node);
+        bool isRoot(BSTNode* node);
     public:
         void addAndCreateNodeFor(SearchGraphNode* searchGraphNode);
         SearchGraphNode* popMaxPriorityNode();

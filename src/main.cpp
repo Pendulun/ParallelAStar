@@ -34,7 +34,7 @@ int main(int argc, char const *argv[])
     //graphSearcher.setHeuristicType(GraphSearcher::heuristicType::ZERO);
     std::stack<unsigned int> path = graphSearcher.searchInGraph();
     if(!path.empty()){
-        std::cout<<"Nodes explored count: "<<graphSearch.getNodesExploredCount()<<std::endl;
+        std::cout<<"Nodes explored count: "<<graphSearcher.getNodesExploredCount()<<std::endl;
         std::cout<<"Solution Size: "<<path.size()<<std::endl;
 
         std::cout<<"[";
