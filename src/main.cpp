@@ -4,6 +4,7 @@
 #include "FileToGraph.hpp"
 #include <iostream>
 #include <stack>
+#include <chrono>
 
 void printUsage(){
     std::cout<<"./pastar edgesFile nodePositionsFile originDestinyFile"<<std::endl;
@@ -32,7 +33,20 @@ int main(int argc, char const *argv[])
     graphSearcher.setGraph(&myGraph);
     //graphSearcher.setHeuristicType(GraphSearcher::heuristicType::EUCLIDIAN);
     //graphSearcher.setHeuristicType(GraphSearcher::heuristicType::ZERO);
-    std::stack<unsigned int> path = graphSearcher.searchInGraph();
+    std::stack<unsigned int> path;
+    std::chrono::milliseconds execSumTime = std::chrono::milliseconds(0);;
+    int numIterations = 1;
+    for(int i = 0; i < numIterations; i++){
+        std::cout<<"Iteration "<<i<<"\n";
+        std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+        //path = graphSearcher.searchInGraph();
+        path = graphSearcher.parallelSearchInGraph(4);
+        std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+        execSumTime += std::chrono::duration_cast<std::chrono::milliseconds> (t2 - t1);
+    }  
+    unsigned int meanTime = execSumTime.count()/numIterations;
+    std::cout<<"Mean Time after "<<numIterations<<": "<<meanTime<<std::endl;
+    
     if(!path.empty()){
         std::cout<<"Nodes explored count: "<<graphSearcher.getNodesExploredCount()<<std::endl;
         std::cout<<"Solution Size: "<<path.size()<<std::endl;
