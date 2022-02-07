@@ -9,6 +9,7 @@
 #include <list>
 #include <unordered_map>
 #include <iterator>
+#include <pthread.h>
 
 #include <iostream>
 
@@ -18,11 +19,9 @@
 #include "EuclidianHeuristic.hpp"
 #include "ZeroHeuristic.hpp"
 #include "SearchGraphNode.hpp"
-#include "SearchGraphNodeComparator.hpp"
 #include "BST.hpp"
 #include "BSTNode.hpp"
-
-
+#include "ParallelASearch.hpp"
 
 class GraphSearcher{
 public:
@@ -40,12 +39,16 @@ public:
 
     void setGraph(Graph* newGraph);
     void setInitialNode(unsigned int initialNodeId);
+
     std::stack<unsigned int> searchInGraph();
+    std::stack<unsigned int> parallelSearchInGraph(unsigned int numThreads);
+
     float getTotalCost();
     float getPathCost();
     unsigned int getNodesExploredCount();
 
 private:
+
     GraphSearcher::searchType mySearchType;
     GraphSearcher::heuristicType myHeuristicType;
     Graph* myGraph;
@@ -55,6 +58,13 @@ private:
 
     unsigned int myInitialNodeId;
     std::stack<unsigned int> astarSearch(Heuristic* myHeuristic);
+
+    std::stack<unsigned int> parallelAstarSearch(Heuristic* myHeuristic, unsigned int numThreads);
+    static void* oneWaySearch(void* args);
+
+    std::stack<unsigned int> combineTwoWaySearchesPath(std::stack<unsigned int>, std::stack<unsigned int>);
+    
     std::stack<unsigned int> getPathTo(SearchGraphNode* finalNode);
+    Heuristic* getHeuristic();
 };
 #endif
