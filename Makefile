@@ -6,12 +6,13 @@ SRC=./src/
 INCLUDE=./include/
 GRAPHS=./testGraphs/
 
-GRAPHSEARCHERDEPENDENCIES= $(BUILD)Graph.o $(BUILD)SearchGraphNode.o $(BUILD)Heuristic.o $(BUILD)ManhattanHeuristic.o $(BUILD)EuclidianHeuristic.o $(BUILD)ZeroHeuristic.o $(BUILD)BST.o $(BUILD)BSTNode.o
+HEURISTICS = $(BUILD)Heuristic.o $(BUILD)ManhattanHeuristic.o $(BUILD)EuclidianHeuristic.o $(BUILD)ZeroHeuristic.o
+GRAPHSEARCHERDEPENDENCIES = $(BUILD)Graph.o $(BUILD)SearchGraphNode.o  $(BUILD)ParallelASearch.o $(HEURISTICS) $(BUILD)BST.o $(BUILD)BSTNode.o
 
 all: ${EXEC}
 
 ${EXEC}: $(BUILD)main.o $(BUILD)FileToGraph.o $(BUILD)GraphNode.o $(BUILD)GraphSearcher.o $(GRAPHSEARCHERDEPENDENCIES)
-	${CXX} ${CXXFLAGS} -o ${EXEC} $(BUILD)main.o $(BUILD)GraphNode.o $(BUILD)GraphSearcher.o $(BUILD)FileToGraph.o $(GRAPHSEARCHERDEPENDENCIES)
+	${CXX} ${CXXFLAGS} -o ${EXEC} $(BUILD)main.o $(BUILD)GraphNode.o $(BUILD)GraphSearcher.o $(BUILD)FileToGraph.o $(GRAPHSEARCHERDEPENDENCIES) -lpthread
 
 $(BUILD)main.o: $(SRC)main.cpp $(BUILD)FileToGraph.o $(BUILD)GraphNode.o $(BUILD)SearchGraphNode.o $(BUILD)GraphSearcher.o
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)main.cpp -o $(BUILD)main.o
@@ -23,13 +24,16 @@ $(BUILD)SearchGraphNode.o: $(SRC)SearchGraphNode.cpp $(BUILD)GraphNode.o
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)SearchGraphNode.cpp -o $(BUILD)SearchGraphNode.o
 
 $(BUILD)GraphSearcher.o: $(SRC)GraphSearcher.cpp $(GRAPHSEARCHERDEPENDENCIES)
-	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)GraphSearcher.cpp -o $(BUILD)GraphSearcher.o
+	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)GraphSearcher.cpp -o $(BUILD)GraphSearcher.o -lpthread
 
 $(BUILD)Graph.o: $(SRC)Graph.cpp $(BUILD)GraphNode.o $(BUILD)Heuristic.o
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)Graph.cpp -o $(BUILD)Graph.o
 
 $(BUILD)Heuristic.o: $(BUILD)GraphNode.o $(SRC)Heuristic.cpp
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)Heuristic.cpp -o $(BUILD)Heuristic.o
+
+$(BUILD)ParallelASearch.o: $(BUILD)Heuristic.o $(BUILD)BST.o $(BUILD)Graph.o $(SRC)ParallelASearch.cpp
+	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)ParallelASearch.cpp -o $(BUILD)ParallelASearch.o -lpthread
 
 $(BUILD)ManhattanHeuristic.o: $(BUILD)Heuristic.o $(SRC)ManhattanHeuristic.cpp
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)ManhattanHeuristic.cpp -o $(BUILD)ManhattanHeuristic.o
