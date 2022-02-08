@@ -32,7 +32,7 @@ $(BUILD)Graph.o: $(SRC)Graph.cpp $(BUILD)GraphNode.o $(BUILD)Heuristic.o
 $(BUILD)Heuristic.o: $(BUILD)GraphNode.o $(SRC)Heuristic.cpp
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)Heuristic.cpp -o $(BUILD)Heuristic.o
 
-$(BUILD)ParallelASearch.o: $(BUILD)Heuristic.o $(BUILD)BST.o $(BUILD)Graph.o $(SRC)ParallelASearch.cpp
+$(BUILD)ParallelASearch.o: $(BUILD)Heuristic.o $(BUILD)GraphNode.o $(BUILD)BST.o $(BUILD)Graph.o $(BUILD)SearchGraphNode.o $(SRC)ParallelASearch.cpp
 	${CXX} ${CXXFLAGS} -I${INCLUDE} -c $(SRC)ParallelASearch.cpp -o $(BUILD)ParallelASearch.o -lpthread
 
 $(BUILD)ManhattanHeuristic.o: $(BUILD)Heuristic.o $(SRC)ManhattanHeuristic.cpp

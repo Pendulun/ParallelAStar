@@ -214,27 +214,63 @@ std::stack<unsigned int> GraphSearcher::parallelSearchInGraph(unsigned int numTh
 }
 
 
+SearchGraphNode* GraphSearcher::populateInitialNodeOpenList(GraphNode* originNode, GraphNode* finalNode, Heuristic* myHeuristic){
+    SearchGraphNode* initialSearchGraphNode = new SearchGraphNode();
+    initialSearchGraphNode->setGraphNode(originNode);
+    initialSearchGraphNode->setLastActionCost(0.0);
+    initialSearchGraphNode->setPathCost(0.0);
+    initialSearchGraphNode->setTotalCost(0 + myHeuristic->calculate(originNode, finalNode));
+
+    return initialSearchGraphNode;
+
+}
 std::stack<unsigned int> GraphSearcher::parallelAstarSearch(Heuristic* myHeuristic, unsigned int numThreads){
 
     pthread_t threads[numThreads];
     ParallelASearch* args[numThreads];
     std::stack<unsigned int> paths[2];
-    std::set<unsigned int> closedLists[2];
-    unsigned int bestPathCost = 0.0;
+    std::map<unsigned int, double> closedLists[2];
+    double bestPathCost = 0.0;
     bool bestPathCostDefined = false;
     BST openLists[2];
+    bool terminate = false;
+    std::list<SearchGraphNode*> searchGraphNodescreated[2];
 
-    pthread_mutex_t openList1Mutex;
-    pthread_mutex_t openList2Mutex;
-    pthread_mutex_t closedList1Mutex;
-    pthread_mutex_t closedList2Mutex;
-    pthread_mutex_t bestPathMutex;
+    GraphNode* originNode = &this->myGraph->findNode(this->myGraph->getFinalPos());
+    GraphNode* finalNode = &this->myGraph->findNode(this->myGraph->getFinalPos());
 
-    pthread_mutex_init(&openList1Mutex, nullptr);
-    pthread_mutex_init(&openList2Mutex, nullptr);
-    pthread_mutex_init(&closedList1Mutex, nullptr);
-    pthread_mutex_init(&closedList2Mutex, nullptr);
-    pthread_mutex_init(&bestPathMutex, nullptr);
+    SearchGraphNode* searchNode1 = this->populateInitialNodeOpenList(originNode, finalNode, myHeuristic);
+    SearchGraphNode* searchNode2 = this->populateInitialNodeOpenList(finalNode, originNode, myHeuristic);
+    searchGraphNodescreated[0].push_back(searchNode1);
+    searchGraphNodescreated[1].push_back(searchNode2);
+    openLists[0].addAndCreateNodeFor(searchNode1);
+    openLists[1].addAndCreateNodeFor(searchNode2);
+
+    pthread_rwlock_t openList1Mutex;
+    pthread_rwlock_t openList2Mutex;
+    pthread_rwlock_t closedList1Mutex;
+    pthread_rwlock_t closedList2Mutex;
+    pthread_rwlock_t bestPathMutex;
+    pthread_rwlock_t terminateMutex;
+    pthread_rwlock_t terminateMutex[2];
+    pthread_rwlock_t searchNodesMutex[2];
+    pthread_cond_t hasNodesOpenListCondVars[2];
+
+    pthread_rwlock_init(&openList1Mutex, nullptr);
+    pthread_rwlock_init(&openList2Mutex, nullptr);
+    pthread_rwlock_init(&closedList1Mutex, nullptr);
+    pthread_rwlock_init(&closedList2Mutex, nullptr);
+    pthread_rwlock_init(&bestPathMutex, nullptr);
+    pthread_rwlock_init(&terminateMutex, nullptr);
+
+    for (unsigned int i = 0; i< 2; i++){
+        pthread_rwlock_init(searchNodesMutex[i], NULL);
+        pthread_rwlock_init(terminateMutex[i], NULL);
+    }
+
+    for (unsigned int i = 0; i< 2; i++){
+        pthread_cond_init(hasNodesOpenListCondVars[i], NULL);
+    }
 
     for(unsigned int i = 0; i< numThreads; i++){
         args[i] = new ParallelASearch();
@@ -249,30 +285,42 @@ std::stack<unsigned int> GraphSearcher::parallelAstarSearch(Heuristic* myHeurist
 
         if (i < numThreads/2){
             args[i]->setPathToFinalNode(paths[0]);
-            args[i]->setOpenList(openLists[0]);
+            args[i]->setMyOpenList(openLists[0]);
+            args[i]->setOtherSearchOpenList(openLists[1]);
             args[i]->setMyClosedList(closedLists[0]);
             args[i]->setOtherSearchClosedList(closedLists[1]);
+            args[i]->setSearchPathNodesCreated(searchGraphNodescreated[0]);
             
             args[i]->setInitNodeId(this->myGraph->getInitialPos());
             args[i]->setFinalNodeId(this->myGraph->getFinalPos());
+            args[i]->setMyOriginNode(originNode);
+            args[i]->setFinalNode(finalNode);
 
             args[i]->setMyClosedListMutex(&this->closedList1Mutex);
             args[i]->setOtherSearchClosedListMutex(&this->closedList2Mutex);
             args[i]->setMyOpenListMutex(&this->openList1Mutex);
             args[i]->setOtherSearchOpenListMutex(&this->openList2Mutex);
+            args[i]->setHasNodesOpenListCondVar(&hasNodesOpenListCondVars[0]);
+            args[i]->setSearchNodesMutex(&this->searchNodesMutex[0]);
         }else{
             args[i]->setPathToFinalNode(paths[1]);
-            args[i]->setOpenList(openLists[1]);
+            args[i]->setMyOpenList(openLists[1]);
+            args[i]->setMyOpenList(openLists[0]);
             args[i]->setMyClosedList(closedLists[1]);
             args[i]->setOtherSearchClosedList(closedLists[0]);
+            args[i]->setSearchPathNodesCreated(searchGraphNodescreated[1]);
 
             args[i]->setInitNodeId(this->myGraph->getFinalPos());
             args[i]->setFinalNodeId(this->myGraph->getInitialPos());
+            args[i]->setMyOriginNode(finalNode);
+            args[i]->setFinalNode(originNode);
 
             args[i]->setOtherSearchClosedListMutex(&this->closedList1Mutex);
             args[i]->setMyClosedListMutex(&this->closedList2Mutex);
             args[i]->setOtherSearchOpenListMutex(&this->openList1Mutex);
             args[i]->setMyOpenListMutex(&this->openList2Mutex);
+            args[i]->setHasNodesOpenListCondVar(&hasNodesOpenListCondVars[1]);
+            args[i]->setSearchNodesMutex(&this->searchNodesMutex[1]);
         }
 
         pthread_create(&threads[i], NULL, &GraphSearcher::oneWaySearch, (void*)args[i]);
@@ -283,11 +331,21 @@ std::stack<unsigned int> GraphSearcher::parallelAstarSearch(Heuristic* myHeurist
         pthread_join(threads[i], nullptr);
     }
 
-    pthread_mutex_destroy(&openList1Mutex);
-    pthread_mutex_destroy(&openList2Mutex);
-    pthread_mutex_destroy(&closedList1Mutex);
-    pthread_mutex_destroy(&closedList2Mutex);
-    pthread_mutex_destroy(&bestPathMutex);
+    for (unsigned int i = 0; i< 2; i++){
+        pthread_rwlock_destroy(searchNodesMutex[i]);
+        pthread_rwlock_destroy(terminateMutex[i]);
+    }
+
+    pthread_rwlock_destroy(&openList1Mutex);
+    pthread_rwlock_destroy(&openList2Mutex);
+    pthread_rwlock_destroy(&closedList1Mutex);
+    pthread_rwlock_destroy(&closedList2Mutex);
+    pthread_rwlock_destroy(&bestPathMutex);
+    pthread_rwlock_destroy(&terminateMutex);
+
+    for (unsigned int i = 0; i< 2; i++){
+        pthread_cond_destroy(hasNodesOpenListCondVars[i]);
+    }
 
     std::stack<unsigned int> finalPath = this->combineTwoWaySearchesPath(args[0]->getPathToFinalNode(), args[numThreads-1]->getPathToFinalNode());
     
@@ -318,7 +376,7 @@ std::stack<unsigned int> GraphSearcher::combineTwoWaySearchesPath(std::stack<uns
 void* GraphSearcher::oneWaySearch(void* args){
     ParallelASearch* thread = static_cast<ParallelASearch*>(args);
 
-    thread->sayHi();
+    thread->search();
     
     return NULL;
 }

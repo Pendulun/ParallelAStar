@@ -2,6 +2,7 @@
 #define __GRAPHSEARCHER_H__
 
 #include <queue>
+#include <map>
 #include <utility>
 #include <vector>
 #include <set>
@@ -63,6 +64,7 @@ private:
     static void* oneWaySearch(void* args);
 
     std::stack<unsigned int> combineTwoWaySearchesPath(std::stack<unsigned int>, std::stack<unsigned int>);
+    SearchGraphNode* populateInitialNodeOpenList(GraphNode* originNode, GraphNode* finalNode, Heuristic* myHeuristic);
     
     std::stack<unsigned int> getPathTo(SearchGraphNode* finalNode);
     Heuristic* getHeuristic();

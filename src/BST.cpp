@@ -164,6 +164,14 @@ SearchGraphNode* BST::popMaxPriorityNode(){
     return nodeToReturn;
 }
 
+double BST::peekMaxPriority(){
+    if (this->maxPriorityNode != nullptr){
+        return this->maxPriorityNode->getTotalCost();
+    }else{
+        return 0.0;
+    }
+}
+
 bool BST::hasNode(const unsigned int nodeId){
     std::unordered_map<unsigned int, BSTNode*>::iterator got = this->idsInBST.find(nodeId);
     return got != this->idsInBST.end();

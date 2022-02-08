@@ -22,6 +22,7 @@ class BST{
     public:
         void addAndCreateNodeFor(SearchGraphNode* searchGraphNode);
         SearchGraphNode* popMaxPriorityNode();
+        double peekMaxPriority();
         bool hasNode(unsigned int nodeId);
         BSTNode* findNode(unsigned int nodeId);
         void updateNode(BSTNode* updatedNode);
