@@ -55,7 +55,7 @@ $(BUILD)BSTNode.o: $(SRC)BSTNode.cpp $(BUILD)SearchGraphNode.o
 
 
 test: ${EXEC}
-	./${EXEC} ${GRAPHS}teste${ARG}.txt ${GRAPHS}nodePosGraph${ARG}.txt ${GRAPHS}nodesToGetPathGraph${ARG}.txt 
+	./${EXEC} ${GRAPHS}teste${ARG}.txt ${GRAPHS}nodePosGraph${ARG}.txt ${GRAPHS}nodesToGetPathGraph${ARG}.txt 4
 
 memCheck: ${EXEC}
 	valgrind --leak-check=full --show-leak-kinds=all ./${EXEC} ${GRAPHS}teste${ARG}.txt ${GRAPHS}nodePosGraph${ARG}.txt ${GRAPHS}nodesToGetPathGraph${ARG}.txt
