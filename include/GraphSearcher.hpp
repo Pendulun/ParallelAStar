@@ -49,7 +49,7 @@ public:
     unsigned int getNodesExploredCount();
 
 private:
-
+    void printStack(std::stack<unsigned int>);
     GraphSearcher::searchType mySearchType;
     GraphSearcher::heuristicType myHeuristicType;
     Graph* myGraph;
@@ -63,8 +63,47 @@ private:
     std::stack<unsigned int> parallelAstarSearch(Heuristic* myHeuristic, unsigned int numThreads);
     static void* oneWaySearch(void* args);
 
+    struct ThreadConfig{
+        pthread_rwlock_t* myOpenListMutex;
+        pthread_rwlock_t* otherSearchOpenListMutex;
+
+        pthread_rwlock_t* myClosedListMutex;
+        pthread_rwlock_t* otherSearchClosedListMutex;
+
+        pthread_rwlock_t* bestPathMutex;
+        pthread_rwlock_t* terminateMutex;
+        pthread_rwlock_t* searchNodesMutex;
+        pthread_cond_t* hasNodesOpenListCondVar;
+        pthread_mutex_t* hasNodesOpenListMutex;
+        pthread_cond_t* currTakenNodesCondVar;
+        pthread_mutex_t* currTakenNodesMutex;
+
+        unsigned int threadId;
+        unsigned int initNodeId;
+        unsigned int finalNodeId;
+        unsigned int* shouldStopCounter;
+        double* bestPathCost;
+        bool* foundAPath;
+        bool* terminate;
+
+        Graph* myGraph;
+        BST* myOpenList;
+        BST* otherSearchOpenList;
+        GraphNode* originNode;
+        GraphNode* finalNode;
+        SearchGraphNode* middleNode;
+        std::stack<unsigned int>* pathToFinalNode;
+        std::map<unsigned int, double>* myClosedList;
+        std::map<unsigned int, double>* otherSearchClosedList;
+        std::set<unsigned int> currTakenNodes;
+        std::list<SearchGraphNode*>* searchNodesCreated;
+        Heuristic* myHeuristic;
+    };
+
     std::stack<unsigned int> combineTwoWaySearchesPath(std::stack<unsigned int>, std::stack<unsigned int>);
     SearchGraphNode* populateInitialNodeOpenList(GraphNode* originNode, GraphNode* finalNode, Heuristic* myHeuristic);
+    void initializeSearchNodesCreated(std::list<SearchGraphNode*>&, BST&, GraphNode&, GraphNode&, Heuristic*);
+    void defineNumThreadsPerSearch(const unsigned int numThreads, unsigned int* numThreadsPerSearch);
     
     std::stack<unsigned int> getPathTo(SearchGraphNode* finalNode);
     Heuristic* getHeuristic();
