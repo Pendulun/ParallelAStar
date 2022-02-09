@@ -107,3 +107,22 @@ unsigned int Graph::getInitialPos(){
 unsigned int Graph::getFinalPos(){
     return this->finalNodeIdx;
 }
+
+double Graph::getCostOfPath(std::stack<unsigned int> path){
+    double pathCost = 0.0;
+    if(!path.empty()){
+        GraphNode& currNode = this->findNode(path.top());
+        path.pop();
+
+        while(!path.empty()){
+            if(currNode.getCostToOtherNodes()->count(path.top()) != 0){
+                pathCost += currNode.getCostToOtherNodes()->at(path.top());
+                currNode = this->findNode(path.top());
+            }
+            
+            path.pop();
+        }
+    }
+
+    return pathCost;
+}

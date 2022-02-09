@@ -2,6 +2,7 @@
 #define __GRAPH_H__
 #include <unordered_map>
 #include <iterator>
+#include <stack>
 #include "GraphNode.hpp"
 
 class Graph
@@ -29,6 +30,7 @@ public:
     void setFinalPosition(const unsigned int finalNodeIdx);
     unsigned int getInitialPos();
     unsigned int getFinalPos();
+    double getCostOfPath(std::stack<unsigned int> path);
 
 };
 #endif
